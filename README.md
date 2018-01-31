@@ -63,6 +63,9 @@ git status
 git commit -m "Some good message"
 // then push changes back to master
 git push
+//If you get any conflicts at this point, make sure you 
+//don't override other people's changes. If you are not sure
+//what to do, ask Brantleigh before pushing again
 ```
 
 # TODO List:
