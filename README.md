@@ -46,3 +46,9 @@ git push
 # TODO List:
 
 // insert all the things here
+- Get free UI components for our use
+- Investigate how to run database on engineering servers
+- Flowchart of UI
+- Dependency tree for system
+- Finalize layout of UI
+- Write API for interaction with Database
