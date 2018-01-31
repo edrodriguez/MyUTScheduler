@@ -2,6 +2,12 @@
 
 ### Useful Tools
 
+// Brantleigh's Repo:
+// this is the file that shows how to do api calls in React and render a component
+// with data from the api calls.
+
+https://github.com/BrantleighBunting/design_project/blob/master/imports/ui/App.jsx
+
 // Material UI
 
 https://material-ui-next.com
@@ -30,6 +36,20 @@ will be hot reloaded in browser for fast development.
 THIS IS ALL YOU NEED FOR NOW. The following is for actual development. We'll talk more about it later
 
 ### Git Workflow
+
+Before doing anything run:
+
+```
+git fetch
+```
+
+To fetch changes, if there are upstream commits then:
+
+```
+git pull
+```
+
+Then proceed with normal workflow:
 
 ```
 git pull https://github.com/edrodriguez/MyUTScheduler
