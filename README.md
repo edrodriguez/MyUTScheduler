@@ -3,7 +3,9 @@
 ### Useful Tools
 
 // Brantleigh's Repo:
+
 // this is the file that shows how to do api calls in React and render a component
+
 // with data from the api calls.
 
 https://github.com/BrantleighBunting/design_project/blob/master/imports/ui/App.jsx
