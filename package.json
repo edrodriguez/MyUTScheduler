@@ -1,0 +1,34 @@
+{
+  "name": "webpack-react-tutorial",
+  "version": "1.0.0",
+  "main": "dist/js/main.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "yarn build && yarn start",
+    "start": "webpack-dev-server",
+    "build": "webpack --progress --colors"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "eslint": "^4.16.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-react": "^7.6.1",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^2.30.1",
+    "material-ui": "^0.20.0",
+    "material-ui-icons": "^1.0.0-beta.17",
+    "path": "^0.12.7",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}
