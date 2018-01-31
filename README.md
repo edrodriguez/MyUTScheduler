@@ -3,6 +3,7 @@
 ### Useful Tools
 
 // Material UI
+
 https://material-ui-next.com
 
 // Markdown Editor
@@ -25,6 +26,8 @@ yarn dev
 ```
 Then in browser at http://localhost:8080 the scheduler will be served, changed in code
 will be hot reloaded in browser for fast development.
+
+THIS IS ALL YOU NEED FOR NOW. The following is for actual development. We'll talk more about it later
 
 ### Git Workflow
 
