@@ -30,6 +30,7 @@ Here is how to set up our development environment:
 git clone https://github.com/edrodriguez/MyUTScheduler
 cd MyUTScheduler
 yarn install
+yarn add global webpack-dev-server
 yarn dev
 ```
 Then in browser at http://localhost:8080 the scheduler will be served, changed in code
