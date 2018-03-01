@@ -13,6 +13,7 @@ import PageHeader from "../presentational/PageHeader";
 import SearchClasses from "../presentational/SearchClasses";
 import DisplayCalendar from "../presentational/DisplayCalendar";
 
+
 class FormContainer extends Component {
   constructor() {
     super();
@@ -29,6 +30,10 @@ class FormContainer extends Component {
     return (
       <MuiThemeProvider>
       
+      <div id="">
+
+      </div>
+
       <RaisedButton label="Default" />
    
       </MuiThemeProvider>
