@@ -4,9 +4,9 @@
   "main": "dist/js/main.js",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn build && yarn start",
-    "start": "webpack-dev-server",
-    "build": "webpack --progress --colors"
+    "build": "webpack --progress --colors",
+    "client": "yarn build && webpack-dev-server",
+    "server": "yarn build && node dist/server/js/main.js"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
