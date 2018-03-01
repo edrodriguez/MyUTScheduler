@@ -40,16 +40,12 @@ THIS IS ALL YOU NEED FOR NOW. The following is for actual development. We'll tal
 
 ### To start Express NodeJS Production Server:
 ```
-nodemon server/app.js
+// Open two terminal windows, in the first do:
+yarn server
+// and in the second do:
+yarn client
 
-go to localhost:7777
-NOTE: Can run webpack dev server and nodemon simultaneously,
-in one terminal do:
-yarn dev
-and open localhost:8080 in browser,
-then in another terminal do:
-nodemon server/app.js
-and open localhost:7777 in browser
+// The server and client will both be running locally then
 ```
 
 ### Git Workflow
