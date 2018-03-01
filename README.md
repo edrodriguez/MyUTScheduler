@@ -38,6 +38,19 @@ will be hot reloaded in browser for fast development.
 
 THIS IS ALL YOU NEED FOR NOW. The following is for actual development. We'll talk more about it later
 
+### To start Express NodeJS Production Server:
+nodemon server/app.js
+
+go to localhost:7777
+NOTE: Can run webpack dev server and nodemon simultaneously,
+in one terminal do:
+yarn dev
+and open localhost:8080 in browser,
+then in another terminal do:
+nodemon server/app.js
+and open localhost:7777 in browser
+
+
 ### Git Workflow
 
 Before doing anything run:
