@@ -21,15 +21,23 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
+    "autoprefixer-loader": "^3.2.0",
+    "babel-polyfill": "^6.26.0",
+    "css-loader": "^0.28.10",
     "express": "^4.16.2",
+    "extract-text-webpack-plugin": "^3.0.2",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.30.1",
+    "less": "^3.0.1",
+    "less-loader": "^4.0.6",
     "material-ui": "^0.20.0",
     "material-ui-icons": "^1.0.0-beta.17",
     "morgan": "^1.9.0",
     "path": "^0.12.7",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-bootstrap-table": "^4.3.1",
+    "react-dom": "^16.2.0",
+    "style-loader": "^0.20.2"
   }
 }

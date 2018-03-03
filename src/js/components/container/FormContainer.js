@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import RaisedButton from 'material-ui/RaisedButton';
 
 /* Component Imports */
 import Input from "../presentational/Input";
@@ -26,23 +27,16 @@ class FormContainer extends Component {
     this.setState({ [event.target.id]: event.target.value });
   }
   render() {
-    const { seo_title } = this.state;
+    //const { seo_title } = this.state;
     return (
-      <MuiThemeProvider>
-      
-      <div id="">
-
-      </div>
-
-      <RaisedButton label="Default" />
-   
-      </MuiThemeProvider>
+     <div></div>
     );
   }
 }
 
 ReactDOM.render(<PageHeader />, document.getElementById("app-bar"));
 ReactDOM.render(<SearchClasses />, document.getElementById("classes-search"));
-ReactDOM.render(<FormContainer />, document.getElementById("create-article-form"));
+ReactDOM.render(<FormContainer />, document.getElementById("app-container"));
+ReactDOM.render(<DisplayCalendar />, document.getElementById("course-schedule-calendar"));
 
 export default FormContainer;

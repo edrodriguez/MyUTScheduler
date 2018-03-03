@@ -27,9 +27,6 @@ export default class PageHeader extends Component {
         title="MyUT Scheduler"
         iconClassNameRight="muidocs-icon-navigation-expand-more"
       />
-      <div>
-      
-      </div>
       </MuiThemeProvider>
     );
   }
