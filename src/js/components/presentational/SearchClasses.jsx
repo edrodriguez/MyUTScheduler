@@ -1,6 +1,6 @@
 /* Material UI Imports */
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 
 /* Middleware allowing exporting with styles */
@@ -43,14 +43,12 @@ export default class SearchClasses extends Component {
 /* className={classes.button} */
   render() {
     return (
-      <MuiThemeProvider>
         <div>
           <Paper style={searchstyle} zDepth={2}>
             <p>Search classes go here</p>
-            <RaisedButton  label="Search" />
+            <Button size="small" >Search </Button>
           </Paper>
         </div>
-      </MuiThemeProvider>
     );
   }
 }
