@@ -79,6 +79,13 @@ git push
 //what to do, ask Brantleigh before pushing again
 ```
 
+# Connect to databse
+
+* endpoint: myutschedulerdbinstance.cztvf7ayunfs.us-east-2.rds.amazonaws.com
+* username: seniordesign
+* password: ask through group me
+
+
 # TODO List:
 
 // insert all the things here
