@@ -19,7 +19,7 @@ module.exports = [
     {
       name: 'server',
 
-      entry: ["./server/app.js"],
+      entry: ["./server/app.jsx"],
       target: 'node',
       output: {
         path: path.resolve(__dirname, "dist/server"),
@@ -32,7 +32,7 @@ module.exports = [
 
       entry: [
         'babel-polyfill',
-        './src/js/app.js',
+        './src/js/app.jsx',
         './src/less/app.less'
       ],
       output: {

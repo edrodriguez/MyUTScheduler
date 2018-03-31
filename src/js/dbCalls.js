@@ -1,35 +1,38 @@
-var mysql = require('mysql');
-var connection;
+import mysql from 'mysql';
+const connection = mysql.createConnection({
+    host: "myutschedulerdbinstance.cztvf7ayunfs.us-east-2.rds.amazonaws.com",
+    user: "seniordesign",
+    password: "myutscheduler",
+    database: "myutschedulerdb"
+});
 
-function connectDb(){
-	connection = mysql.createConnection({
-	  host: "myutschedulerdbinstance.cztvf7ayunfs.us-east-2.rds.amazonaws.com",
-	  user: "seniordesign",
-	  password: "myutscheduler",
-	  database: "myutschedulerdb"
-	});
-}
 
-function getTerms(){
-	connection.connect();
+const getTerms = () => {
+    connection.connect();
 
-	connection.query("SELECT DISTINCT Term FROM CoursesOffered", function (err, result, fields) {
-			if (err) throw err;
-			
-			console.log(result);
-	});
+    connection.query(
+        "SELECT DISTINCT Term FROM CoursesOffered", 
+        (err, result, fields) => {
+            if (err) throw err;
+            
+            console.log(result);
+        }
+    );
 
-	connection.end();
+    connection.end();
 
     var returnArray = [];
 
     for (var i = 0; i < result; i++){
-		var term = result[i].Term;
-		returnArray[i] = term;
+        var term = result[i].Term;
+        returnArray[i] = term;
     }
 
     return returnArray;
-}
+};
+
+
+
 
 function getSubjectsForSemester(semester){
 	var query = "SELECT DISTINCT Subject FROM CoursesOffered WHERE Term = \"${semester}\" ORDER BY Subject ASC";

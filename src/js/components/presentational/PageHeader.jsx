@@ -60,7 +60,7 @@ class PageHeader extends Component {
   const { classes } = this.props;
 
   return (
-    <MuiThemeProvider theme={muiTheme}>
+      <div>
       <Drawer open={this.state.left} onClose={this.toggleDrawer('left', false)}>
         <div
           tabIndex={0}
@@ -86,19 +86,19 @@ class PageHeader extends Component {
       </Drawer>
 
 
-      <AppBar position="static" theme={muiTheme}>
+      <AppBar position="static" style={{backgroundColor: '#003e7e'}}>
         <Toolbar>
           <IconButton onClick={this.toggleDrawer('left', true)} className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="title" color="inherit">
+          <Typography variant="title" color="inherit" style={{color: '#ffd200'}}>
             MyUT Scheduler
           </Typography>
         </Toolbar>
       </AppBar>
 
-     
-    </MuiThemeProvider>
+     </div>
+    
   );
 }
 };
