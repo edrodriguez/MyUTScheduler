@@ -79,7 +79,13 @@ git push
 //what to do, ask Brantleigh before pushing again
 ```
 
-# Connect to databse
+# Connect to databse (new!)
+
+* endpoint: myutschedulerdb.c7vhivwvlaho.us-east-2.rds.amazonaws.com 
+* username: seniordesign
+* password: ask through group me (same as old database)
+
+# Connect to databse (old)
 
 * endpoint: myutschedulerdbinstance.cztvf7ayunfs.us-east-2.rds.amazonaws.com
 * username: seniordesign
