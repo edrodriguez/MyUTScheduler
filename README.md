@@ -85,6 +85,35 @@ git push
 * username: seniordesign
 * password: ask through group me (same as old database)
 
+# Columns in database
+
+*    TERM                  VARCHAR(11)  NOT NULL  -spring summer or fall
+*    SUBJECT               VARCHAR(4) NOT NULL    -department
+*    COURSE                VARCHAR(4) NOT NULL    -course #
+*    SECTION               INTEGER                -section #
+*    LINK_IDENTIFIER       VARCHAR(2)             -if there is another section that needs to be registered with it (for labs)
+*    CRN                   INTEGER  NOT NULL      -identification # (not primary key)
+*    TITLE                 VARCHAR(98)            -name of the class
+*    MIN_CREDITS           NUMERIC(3,1) NOT NULL  
+*    MAX_CREDITS           NUMERIC(3,1) NOT NULL
+*    INSTRUCTOR_LAST_NAME  VARCHAR(25)
+*    INSTRUCTOR_FIRST_NAME VARCHAR(17)
+*    ACTUAL_ENROLLMENT     INTEGER  NOT NULL      -# of people currently registered
+*    MAXIMUM_ENROLLMENT    INTEGER  NOT NULL      -# of people that could potentially register
+*    SEATS_AVAILABLE       INTEGER  NOT NULL      -# of free seats
+*    MEETING_TIME_COUNT    INTEGER  NOT NULL      -if it meets multiple times in one day
+*    SCHEDULE_TYPE         VARCHAR(2) NOT NULL    -lecture, recitation...
+*    BUILDING              VARCHAR(6)             -building name
+*    ROOM                  VARCHAR(10)            -room #
+*    BEGIN_TIME            INTEGER                -start time in military format 1100 = 11:00 am, 2300 = 11:00 pm
+*    END_TIME              INTEGER                -end time in same format
+*    MONDAY                VARCHAR(1)             -contains a M if class meets on a monday, NULL otherwise
+*    TUESDAY               VARCHAR(1)             -contains a T if class meets on a tuesday, NULL otherwise
+*    WEDNESDAY             VARCHAR(1)             -contains a W if class meets on a wednesday, NULL otherwise
+*    THURSDAY              VARCHAR(1)             -contains a R if class meets on a thursday, NULL otherwise
+*    FRIDAY                VARCHAR(1)             -contains a F if class meets on a friday, NULL otherwise
+
+
 # Connect to databse (old)
 
 * endpoint: myutschedulerdbinstance.cztvf7ayunfs.us-east-2.rds.amazonaws.com
