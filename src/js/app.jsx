@@ -11,30 +11,49 @@ import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 
 /* Component Imports */
-import Input from "./components/presentational/Input.jsx";
 import PageHeader from "./components/presentational/PageHeader.jsx";
 import SearchClasses from "./components/presentational/SearchClasses.jsx";
 import DisplayCalendar from "./components/presentational/DisplayCalendar.jsx";
 
+/* If we add isomorphism, this will be handy */
 import ExecutionEnvironment from 'exenv';
+
+import {calendarData} from './SchedulerGlobals.jsx';
+
 /* Apollo */
 import ApolloClient from 'apollo-boost';
 import InMemoryCache, { ApolloProvider } from 'react-apollo';
+
 /* For if we want Redux later on */
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
+/* Recompose */
+import { compose, lifecycle, withState, withProps, withHandlers, withStateHandlers } from 'recompose';
+
+
 const client = new ApolloClient({ 
 	uri: 'http://localhost:7777/graphql',
-	// cache: new InMemoryCache({
-	//     dataIdFromObject: o => (o._id ? `${o.__typename}:${o._id}`: null),
-	//   })
 });
 
-if (ExecutionEnvironment.canUseDOM) {
-	ReactDOM.render((
-		<ApolloProvider client={client}>
+var calendarHandler = null;
+
+class App extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = { classes: [] };
+		this.updateClassesHandler = this.updateClassesHandler.bind(this);
+	}
+
+	updateClassesHandler(classes) {
+		console.log("HANDLER CALLBACK CALLED.");
+		this.setState({classes: classes})
+	}
+
+	render() {
+		return (<ApolloProvider client={client}>
 			<div>
 			<PageHeader />
 			<div style={{
@@ -44,10 +63,14 @@ if (ExecutionEnvironment.canUseDOM) {
 					alignContent: 'top',
               		alignItems: 'left',
 			}}>
-				<SearchClasses />
-				<DisplayCalendar />
+				<SearchClasses updateClassesHandler={this.updateClassesHandler}/>
+				<DisplayCalendar classes={this.state.classes} />
 			</div>
 			</div>
-		</ApolloProvider>
-	), document.getElementById("application"));
+		</ApolloProvider>);
+	}
+}
+
+if (ExecutionEnvironment.canUseDOM) {
+	ReactDOM.render(<App />, document.getElementById("application"));
 }

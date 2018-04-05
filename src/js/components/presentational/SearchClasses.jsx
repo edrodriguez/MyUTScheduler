@@ -16,6 +16,11 @@ import Chip from 'material-ui/Chip';
 import GridList, { GridListTile } from 'material-ui/GridList';
 import { withStyles } from 'material-ui/styles';
 
+import SemestersField, { StateData } from './SelectMultipleDropDown.jsx';
+
+/* We want to update this with the final search */
+import { calendarData } from '../../SchedulerGlobals.jsx';
+
 /* Apollo */
 import { gql } from 'apollo-boost';
 import { Query, graphql } from 'react-apollo';
@@ -29,7 +34,6 @@ import Dialog, {
 
 /* Recompose */
 import { compose, lifecycle, withState, withProps, withHandlers, withStateHandlers } from 'recompose';
-
 
 
 const AlertDialog = (props) => {
@@ -53,12 +57,6 @@ const AlertDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-};
-
-const StateData = {
-  term: '',
-  department: '',
-  course: ''
 };
 
 const uuidv4 = () => { /* Generates RFC4122 Compliant UUID */
@@ -97,147 +95,29 @@ const pDivStyle = {
   flexDirection: 'column',
   justifyContent: 'flex-start',
 };
+
+const SearchResultLabel = (props) => {
+  return (
+    <div style={pContainerStyle}>
+      <div style={{
+        width: '60px', 
+        marginRight: '10px',
+        fontSize: '9pt'
+      }}>
+      {props.title} 
+      </div>
+      <div style={pDivStyle}>{props.body}</div>
+    </div>
+  );
+};
+
+
 /* For date new Date(val.startDate).toLocaleDateString() */
 const LeftPanel = (props) => {
   return (
     <div>
         <Paper style={searchstyle} zDepth={2}>
-          <ExpansionPanel
-            expanded={props.expanded === 'panel1'}
-            onChange={(e) => {
-                console.log("ON CHANGE");
-                props.handleExpansionPanel('panel1')
-              }}
-          >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography align="left" variant="subheading">Semester</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}>
-                <Typography align="left" variant="body1">
-                  Pick the Semester you would like to register for:
-                </Typography>
-                <Chip
-                  style={{margin: '10px 10px 10px 10px'}}
-                  label="Spring 2018"
-                  onClick={(e) => {
-                    props.get_subjects_by_term.refetch({ term: 'Spring 2018' });
-                    StateData.department = '';
-                    StateData.course = '';
-                    props.handleSemesterChipClick(e, 'Spring 2018') 
-                  }}
-                />
-                <Chip
-                  style={{margin: '10px 10px 10px 10px'}}
-                  label="Summer 2018"
-                  onClick={(e) => { 
-                    props.get_subjects_by_term.refetch({ term: 'Summer 2018' });
-                    StateData.department = '';
-                    StateData.course = '';
-                    props.handleSemesterChipClick(e, 'Summer 2018') 
-                  }}
-                />
-                <Chip
-                  style={{margin: '10px 10px 10px 10px'}}
-                  label="Fall 2018"
-                  onClick={(e) => { 
-                    props.get_subjects_by_term.refetch({ term: 'Fall 2018' });
-                    StateData.department = '';
-                    StateData.course = '';
-                    props.handleSemesterChipClick(e, 'Fall 2018') 
-                  }}
-                />
-              </div>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
-            expanded={props.expanded === 'panel2'}
-            onChange={(e) => {
-                console.log("ON CHANGE");
-                props.handleGetDepartments(e, props.get_departments.getDepartments);
-                props.handleExpansionPanel('panel2')
-              }}
-          >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Department</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-
-              <div style={{
-                height: '100px',
-                width: '280px',
-                overflow: 'scroll'
-              }}>
-                <GridList cellHeight={45} cols={3} style={{width: '250px'}}>
-                  {
-                    props.departments ? props.departments.map((tile, idx) => (
-                      <GridListTile key={uuidv4()} cols={1}>
-                        <Chip 
-                          style={{
-                            margin: '10px 10px 10px 10px',
-                            width: '65px'
-                          }}
-                          label={tile}
-                          onClick={(e) => { 
-                            StateData.department = tile;
-                            StateData.course = '';
-                            console.log("StateData.department = ", tile);
-                          }}
-                        />
-                      </GridListTile>
-                    )) : ''
-                  }
-                </GridList>
-              </div>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
-            expanded={props.expanded === 'panel3'}
-            onChange={
-              (e) => {
-                console.log("ON CHANGE");
-                props.get_courses.refetch({ subject: StateData.department });
-                props.handleGetCourses(e, props.get_courses.getCourses);
-                props.handleExpansionPanel('panel3')
-              }}
-          >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Course</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <div style={{
-                height: '100px',
-                width: '280px',
-                overflow: 'scroll'
-              }}>
-              <GridList cellHeight={45} cols={3} style={{width: '250px'}}>
-                  {
-                    props.courses ? props.courses.map((tile, idx) => (
-                      <GridListTile key={uuidv4()} cols={1}>
-                        <Chip 
-                          style={{
-                            margin: '10px 10px 10px 10px',
-                            width: '65px'
-                          }}
-                          label={tile}
-                          onClick={(e) => { 
-                            StateData.course = tile;
-                            console.log("StateData.course = ", tile);
-                          }}
-                        />
-                      </GridListTile>
-                    )) : ''
-                  }
-                </GridList>
-                </div>
-
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-
-
+          <SemestersField />
           <div style={ 
             {
               marginTop: '50px',
@@ -250,115 +130,74 @@ const LeftPanel = (props) => {
             }
           }>
             {
-              props.classes ? props.classes.map((val, idx) => {
-
-                if (idx < 10) {
+              props.classes.length > 0 ? props.classes.map((val, idx) => {
                   return <div 
                     style={{
                       width: '280px',
-                      height: '100%',
+                      height: '160px',
                       margin: '10px 10px 10px 10px',
                       backgroundColor: '#414141'
                     }}
                     key={val.id}>
-                      <div style={pContainerStyle}>
-                        <div style={{
-                          width: '60px', 
-                          marginRight: '10px',
-                          fontSize: '9pt'
-                        }}>Title: </div>
-                        <div style={pDivStyle}>{val.sectionTitle}</div>
-                      </div>
-                      <div style={pContainerStyle}>
-                        <div style={{
-                          width: '60px', 
-                          marginRight: '10px',
-                          fontSize: '9pt'
-                        }}>Room: </div>
-                        <div style={pDivStyle}>{val.room}</div>
-                      </div>
-                      <div style={pContainerStyle}>
-                        <div style={{
-                          width: '60px', 
-                          marginRight: '10px',
-                          fontSize: '9pt'
-                        }}>Section: </div>
-                        <div style={pDivStyle}>{val.section}</div>
-                      </div>
-                      <div style={pContainerStyle}>
-                        <div style={{
-                          width: '60px', 
-                          marginRight: '10px',
-                          fontSize: '9pt'
-                        }}>Days: </div>
-                        <div style={pDivStyle}>{val.daysMet}</div>
-                      </div>
-                      <div style={pContainerStyle}>
-                        <div style={{
-                          width: '60px', 
-                          marginRight: '10px',
-                          fontSize: '9pt'
-                        }}>Start: </div>
-                        <div style={pDivStyle}>{val.startTime}</div>
-                      </div>
-                      <div style={pContainerStyle}>
-                        <div style={{
-                          width: '60px', 
-                          marginRight: '10px',
-                          fontSize: '9pt'
-                        }}>End: </div>
-                        <div style={pDivStyle}>{val.endTime}</div>
-                      </div>
-                      
-                      <div style={pContainerStyle}>
-                        <div style={{
-                          width: '60px', 
-                          marginRight: '10px',
-                          fontSize: '9pt'
-                        }}>Subject: </div>
-                        <div style={pDivStyle}>{val.subject}</div>
-                      </div>
+                      <SearchResultLabel title="Title: " body={val.sectionTitle} />
+                      <SearchResultLabel title="Room: " body={val.room} />
+                      <SearchResultLabel title="Section: " body={val.section} />
+                      <SearchResultLabel title="Days: " body={val.daysMet} />
+                      <SearchResultLabel title="Start: " body={val.startTime} />
+                      <SearchResultLabel title="End: " body={val.endTime} />
+                      <SearchResultLabel title="Subject: " body={val.subject} />
+                      <Button 
+                        type="Raised" 
+                        style ={{
+                          marginTop: 'auto',
+                          float: 'right',
+                          color: '#FAFA0A',
+                        }} 
+                        onClick={
+                          (e) => {
+                              console.log("Registered Class.");
+                              calendarData.classes.push({
+                                title: val.sectionTitle,
+                                room: val.room,
+                                section: val.section,
+                                days: [...val.daysMet], // We want days in the form ["M", "W"] etc
+                                start: val.startTime,
+                                end: val.endTime,
+                                subject: val.subject
+                              });
+                              console.log(calendarData);
+                              props.updateClassesHandler(calendarData.classes);
+                          }
+                        }>Register</Button>
                   </div>
-                }
-              }) : ''
+              }) :<div><p>No Classes Found.</p></div>
+
             }
           </div>
 
           <Button 
             size="small" 
             onClick={(e) => {
-              StateData.term = props.semester ? props.semester : '';
               console.log(props);
 
               console.log(StateData);
               props.get_subjects_by_tsc.refetch({ 
-                term: StateData.term,
+                term: StateData.semester,
                 department: StateData.department,
                 course: StateData.course, 
+              }).then(obj => {
+                const all = obj.data.getSubjectsByTermDepartmentCourse;
+                console.log("MOST FILTERED: ", all);
+                props.handleClassesUpdate(e, all);
               });
 
-              const subjects = props.get_subjects_by_term.getSubjectsByTerm;
-              const departments = props.get_departments.getDepartments;
-              const courses = props.get_courses.getCourses;
-
-              const all = props.get_subjects_by_tsc.getSubjectsByTermDepartmentCourse;
-
-              console.log("MOST FILTERED: ", all);
-
-              
-              console.log("DEPARTMENTS: ", departments);
-              console.log("COURSES: ", courses)
-
-              console.log(subjects);
-
-              if (StateData.term === '' || 
+              if (StateData.semester === '' || 
                   StateData.department === '' ||
                   StateData.course === '') {
                 props.handleOpen(e);
               } else {
                 props.handleClose(e);
               }
-              props.handleClassesUpdate(e, all);
             }}
             style={{
               display: 'flex', 
@@ -402,24 +241,6 @@ sameTimeLink
 
 const SearchClassesBase = compose(
   graphql(gql`
-    query SearchClassesGetCourses ($subject: String!) {
-      getCourses(subject: $subject) 
-    }
-  `, { 
-    name: 'get_courses',
-    options: {
-      variables: {
-        subject: StateData.department
-      }
-    }
-  }),
-  graphql(gql`
-    query SearchClassesGetDepartments {
-      getDepartments
-    }
-  `, { name: 'get_departments' }
-  ),
-  graphql(gql`
     query SearchClassesGetSubjectsByTermDeptCourse (
       $term: String!, 
       $department: String!, 
@@ -457,7 +278,7 @@ const SearchClassesBase = compose(
     name: 'get_subjects_by_tsc',
     options: {
       variables: {
-        term: StateData.term,
+        term: StateData.semester,
         department: StateData.department,
         course: StateData.course,
       }
@@ -487,7 +308,7 @@ const SearchClassesBase = compose(
     name: 'get_subjects_by_term',
     options: {
       variables: {
-        term: StateData.term
+        term: StateData.semester
       }
     }
   }),
@@ -517,13 +338,6 @@ const SearchClassesBase = compose(
       handleStateUpdate: props => event => {
         console.log("Handle state update clicked.");
         
-      },
-      handleSemesterChipClick: props => (event, semester) => {
-        console.log("Handle Semester Chip Click: ", semester);
-
-        return {
-          semester: semester /* Update the semester in the props */
-        }
       },
       handleClassesUpdate: props => (event, classes) => {
         return {
@@ -564,19 +378,6 @@ const SearchClassesBase = compose(
 const SearchClasses = lifecycle({
   componentDidMount() {
     console.log("Component Did Mount: SearchClasses");
-
-    // this.props.client.query({})
-
-    // axios.get('http://localhost:3002/courses')
-    //      .then(response => {
-    //         this.obj_data = response.data.data[0];
-    //         console.log(this.obj_data.ID);
-            
-            
-    //      }
-    // );
-
-
   }
 })(SearchClassesBase);
 

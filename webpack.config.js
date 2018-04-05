@@ -76,6 +76,16 @@ module.exports = [
             }, {
                 loader: "less-loader" // compiles Less to CSS
             }]
+          },
+          {
+            test: /\.css$/,
+            use: [{
+                loader: "style-loader" // creates style nodes from JS strings
+            }, {
+                loader: "css-loader" // translates CSS into CommonJS
+            }, {
+                loader: "less-loader" // compiles Less to CSS
+            }]
           }
         ],
         loaders: [
@@ -86,6 +96,10 @@ module.exports = [
           },
           {
             test: /\.less$/,
+            loader: ExtractTextPlugin.extract('style-loader', 'css!less?indentedSyntax=true&sourceMap=true')
+          },
+          {
+            test: /\.css$/,
             loader: ExtractTextPlugin.extract('style-loader', 'css!less?indentedSyntax=true&sourceMap=true')
           },
           // {

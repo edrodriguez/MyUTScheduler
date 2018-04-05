@@ -106,6 +106,15 @@ const courseOfferedRecordType = new GraphQLObjectType({
     }
 });
 
+const departmentWithCourseRecordType = new GraphQLObjectType({
+    name: 'deptWithCourse',
+    fields: {
+        id: { type: GraphQLID, resolve: (root, args, context, info) => { return uuidv4(); } },
+        title: { type: GraphQLString, resolve: (root, args, context, info) => { return root.department } },
+        sections: { type: new GraphQLList(GraphQLString), resolve: (root, args, context, info) => { return root.sections } }
+    }
+});
+
 const schema = new GraphQLSchema({
     // mutation: new GraphQLObjectType({  GraphQL Mutations Go Here 
     //     name: 'Mutation',
@@ -161,6 +170,36 @@ const schema = new GraphQLSchema({
                     });
                 }
             },
+
+
+            // getDepartmentsWithCourses: {
+            //     type: new GraphQLList(departmentWithCourseRecordType),
+            //     resolve(parent) {
+            //         return new Promise((resolve, reject) => {
+            //             var final_subjects = [];
+            //             var final_courses= {};
+            //             connection.query(
+            //                 "SELECT DISTINCT Subject FROM CoursesOffered",
+            //                 (error, result, fields) => {
+            //                     if (error) { console.log(error); reject(); }
+
+            //                     result.map((val, idx) => {
+
+            //                         connection.query(
+            //                             "SELE"
+            //                         )
+
+            //                     })
+            //                 }
+            //             );
+
+
+
+                       
+            //         });
+            //     }
+            // },
+
 
             getDepartments: {
                 type: new GraphQLList(GraphQLString),
