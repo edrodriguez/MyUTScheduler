@@ -5,6 +5,9 @@ import { withStyles } from 'material-ui/styles';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 
+import { parseTime } from '../Lib.jsx';
+
+
 const searchstyle = {
   height: '800px',
   width: 300,
@@ -61,6 +64,7 @@ const SearchResultLabel = (props) => {
 }
 */
 
+
 const ScheduleCard = (props) => {
 	const { course } = props;
 	return (
@@ -81,7 +85,7 @@ const ScheduleCard = (props) => {
               	title="Days: " body={course.days} />
               <SearchResultLabel 
               	title="When: " 
-              	body={course.start + " - " + course.end} />
+              	body={parseTime(course.start) + " - " + parseTime(course.end)} />
               <SearchResultLabel 
               	title="Subject: " 
               	body={course.subject} />

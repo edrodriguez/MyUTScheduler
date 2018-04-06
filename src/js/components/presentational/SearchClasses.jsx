@@ -21,6 +21,9 @@ import SemestersField, { StateData } from './SelectMultipleDropDown.jsx';
 /* We want to update this with the final search */
 import { calendarData } from '../../SchedulerGlobals.jsx';
 
+
+import { parseTime } from '../Lib.jsx';
+
 /* Apollo */
 import { gql } from 'apollo-boost';
 import { Query, graphql } from 'react-apollo';
@@ -113,6 +116,7 @@ const SearchResultLabel = (props) => {
 };
 
 
+
 /* For date new Date(val.startDate).toLocaleDateString() */
 const LeftPanel = (props) => {
   return (
@@ -143,7 +147,7 @@ const LeftPanel = (props) => {
                       <SearchResultLabel title="Title: " body={val.title} />
                       <SearchResultLabel title="Room: " body={val.building + " " + val.room} />
                       <SearchResultLabel title="Days: " body={val.days} />
-                      <SearchResultLabel title="When: " body={val.beginTime + " - " + val.endTime} />
+                      <SearchResultLabel title="When: " body={parseTime(val.beginTime) + " - " + parseTime(val.endTime)} />
                       <SearchResultLabel title="Subject: " body={val.subject + " " + val.course + ":" + val.section} />
                       <Button 
                         type="Raised" 

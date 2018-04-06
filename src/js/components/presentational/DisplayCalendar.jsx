@@ -46,6 +46,7 @@ const ScheduleComponent = (props) => {
 			{
 				props.classes.map((course, index) => {
 					return course.days.map((day) => {
+
 						if (day == props.value) {
 							console.log("WE HIT IT LAD WEW");
 							return <ScheduleCard course={course} />

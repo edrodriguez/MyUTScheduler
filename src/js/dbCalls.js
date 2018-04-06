@@ -117,7 +117,7 @@ function getSectionsForCourseInDepartmentAndSemester(semester, department, cours
     return returnArray;
 }
 
-function addPadding(number, length) {
+const addPadding = (number, length) => {
 
     var my_string = '' + number;
     while (my_string.length < length) {
@@ -128,7 +128,7 @@ function addPadding(number, length) {
 
 }
 
-function parseTime(time){
+const parseTime = (time) => {
 	var returnTime;
 	var hour;
 	var min;

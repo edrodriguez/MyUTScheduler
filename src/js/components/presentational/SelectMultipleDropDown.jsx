@@ -48,9 +48,11 @@ const SemestersFieldBase = (props) => {
           onChange={(newValue) => {
             StateData.semester = newValue;
             const departments = props.get_departments.getDepartments; /* Load departments for the next series of boxes */
-            departments.map((val, idx) => {
-              Departments[idx] = {value: val, label: val};
-            });
+            if (departments != null) { 
+              departments.map((val, idx) => {
+                Departments[idx] = {value: val, label: val};
+              });
+            }
             props.handleGetDepartments(newValue, Departments, true, false);
             props.updateValue({ semesterValue: newValue });
           }}
