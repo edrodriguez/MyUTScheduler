@@ -14,6 +14,7 @@ import Paper from 'material-ui/Paper';
 import PageHeader from "./components/presentational/PageHeader.jsx";
 import SearchClasses from "./components/presentational/SearchClasses.jsx";
 import DisplayCalendar from "./components/presentational/DisplayCalendar.jsx";
+import Extracurricular from "./components/presentational/Extracurricular.jsx";
 
 /* If we add isomorphism, this will be handy */
 import ExecutionEnvironment from 'exenv';
@@ -34,7 +35,7 @@ import { compose, lifecycle, withState, withProps, withHandlers, withStateHandle
 
 
 const client = new ApolloClient({ 
-	uri: 'http://localhost:7777/graphql',
+	uri: 'http://localhost:7777/graphqlV2',
 });
 
 var calendarHandler = null;
@@ -64,7 +65,10 @@ class App extends Component {
               		alignItems: 'left',
 			}}>
 				<SearchClasses updateClassesHandler={this.updateClassesHandler}/>
-				<DisplayCalendar classes={this.state.classes} />
+				<div style={{display: 'flex', flexDirection: 'column'}}>
+					<Extracurricular />
+					<DisplayCalendar classes={this.state.classes} />
+				</div>
 			</div>
 			</div>
 		</ApolloProvider>);

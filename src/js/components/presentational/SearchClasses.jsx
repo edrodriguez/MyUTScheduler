@@ -102,7 +102,8 @@ const SearchResultLabel = (props) => {
       <div style={{
         width: '60px', 
         marginRight: '10px',
-        fontSize: '9pt'
+        fontSize: '9pt',
+        paddingLeft: '5px'
       }}>
       {props.title} 
       </div>
@@ -136,16 +137,14 @@ const LeftPanel = (props) => {
                       width: '280px',
                       height: '160px',
                       margin: '10px 10px 10px 10px',
-                      backgroundColor: '#414141'
+                      backgroundColor: '#003e7e'
                     }}
                     key={val.id}>
-                      <SearchResultLabel title="Title: " body={val.sectionTitle} />
-                      <SearchResultLabel title="Room: " body={val.room} />
-                      <SearchResultLabel title="Section: " body={val.section} />
-                      <SearchResultLabel title="Days: " body={val.daysMet} />
-                      <SearchResultLabel title="Start: " body={val.startTime} />
-                      <SearchResultLabel title="End: " body={val.endTime} />
-                      <SearchResultLabel title="Subject: " body={val.subject} />
+                      <SearchResultLabel title="Title: " body={val.title} />
+                      <SearchResultLabel title="Room: " body={val.building + " " + val.room} />
+                      <SearchResultLabel title="Days: " body={val.days} />
+                      <SearchResultLabel title="When: " body={val.beginTime + " - " + val.endTime} />
+                      <SearchResultLabel title="Subject: " body={val.subject + " " + val.course + ":" + val.section} />
                       <Button 
                         type="Raised" 
                         style ={{
@@ -155,20 +154,46 @@ const LeftPanel = (props) => {
                         }} 
                         onClick={
                           (e) => {
+
+                              /* 
+                                id                
+                                term               
+                                subject            
+                                course             
+                                section            
+                                linkId             
+                                crn                
+                                title              
+                                minCredits         
+                                maxCredits         
+                                instructorFirstName
+                                instructorLastName 
+                                actualEnrollment   
+                                maximumEnrollment  
+                                seatsAvailable     
+                                meetingTimeCount   
+                                scheduleType       
+                                building           
+                                room               
+                                beginTime          
+                                endTime            
+                                days 
+                              */
+
                               console.log("Registered Class.");
                               calendarData.classes.push({
-                                title: val.sectionTitle,
-                                room: val.room,
+                                title: val.title,
+                                room: val.building + " " + val.room,
                                 section: val.section,
-                                days: [...val.daysMet], // We want days in the form ["M", "W"] etc
-                                start: val.startTime,
+                                days: val.days, 
+                                start: val.beginTime, /* TODO: Filter this from an int to actual time value */
                                 end: val.endTime,
-                                subject: val.subject
+                                subject: val.subject + " " + val.course + ":" + val.section
                               });
                               console.log(calendarData);
                               props.updateClassesHandler(calendarData.classes);
                           }
-                        }>Register</Button>
+                        }>Schedule</Button>
                   </div>
               }) :<div><p>No Classes Found.</p></div>
 
@@ -214,31 +239,6 @@ const LeftPanel = (props) => {
   );
 };
 
-
-/* All available getSubjectsByTerm values:
-section       
-daysMet       
-startDate     
-endDate
-startTime
-endTime
-room
-term           
-crossList      
-status         
-sectionTitle   
-roomNum   
-roomName    
-buildingName
-campus 
-course     
-subject   
-sectionNum 
-instructor
-courseOfferingId
-sameTimeLink
-*/
-
 const SearchClassesBase = compose(
   graphql(gql`
     query SearchClassesGetSubjectsByTermDeptCourse (
@@ -250,28 +250,28 @@ const SearchClassesBase = compose(
         term: $term,
         department: $department,
         course: $course) {
-         id
-         section       
-         daysMet       
-         startDate     
-         endDate
-         startTime
-         endTime
-         room
-         term           
-         crossList      
-         status         
-         sectionTitle   
-         roomNum   
-         roomName    
-         buildingName
-         campus 
-         course     
-         subject   
-         sectionNum 
-         instructor
-         courseOfferingId
-         sameTimeLink
+          id                
+          term               
+          subject            
+          course             
+          section            
+          linkId             
+          crn                
+          title              
+          minCredits         
+          maxCredits         
+          instructorFirstName
+          instructorLastName 
+          actualEnrollment   
+          maximumEnrollment  
+          seatsAvailable     
+          meetingTimeCount   
+          scheduleType       
+          building           
+          room               
+          beginTime          
+          endTime            
+          days 
       }
     }
   `, {
@@ -281,34 +281,6 @@ const SearchClassesBase = compose(
         term: StateData.semester,
         department: StateData.department,
         course: StateData.course,
-      }
-    }
-  }),
-  graphql(
-    gql`
-      query SearchClassesGetSubjectsByTerm ($term: String!) {
-        getSubjectsByTerm(term: $term) {
-          id
-          section       
-          daysMet       
-          startDate     
-          endDate
-          startTime
-          endTime
-          room    
-          sectionTitle    
-          buildingName
-          campus 
-          course     
-          subject   
-          sectionNum 
-        }
-      }
-  `, {
-    name: 'get_subjects_by_term',
-    options: {
-      variables: {
-        term: StateData.semester
       }
     }
   }),

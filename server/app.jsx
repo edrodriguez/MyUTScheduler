@@ -8,6 +8,7 @@ import request from 'request';
 import { 
     GraphQLID, 
     GraphQLList, 
+    GraphQLInt,
     GraphQLObjectType, 
     GraphQLString,
     GraphQLBoolean,
@@ -34,17 +35,67 @@ const mime_types = {
     js: 'application/javascript'
 };
 
+/* V2 */ 
 const connection = mysql.createConnection({
-    host: "myutschedulerdbinstance.cztvf7ayunfs.us-east-2.rds.amazonaws.com",
-    user: "seniordesign",
-    password: "myutscheduler",
-    database: "myutschedulerdb"
+    host: 'myutschedulerdb.c7vhivwvlaho.us-east-2.rds.amazonaws.com',
+    user: 'seniordesign',
+    password: 'myutscheduler',
+    database: 'myutschedulerdb'
 });
+
+
+/* NEW COLUMNS
+
+    TERM VARCHAR(11) NOT NULL -spring summer or fall
+    SUBJECT VARCHAR(4) NOT NULL -department
+    COURSE VARCHAR(4) NOT NULL -course #
+    SECTION INTEGER -section #
+    LINK_IDENTIFIER VARCHAR(2) -if there is another section that needs to be registered with it (for labs)
+    CRN INTEGER NOT NULL -identification # (not primary key)
+    TITLE VARCHAR(98) -name of the class
+    MIN_CREDITS NUMERIC(3,1) NOT NULL
+    MAX_CREDITS NUMERIC(3,1) NOT NULL
+    INSTRUCTOR_LAST_NAME VARCHAR(25)
+    INSTRUCTOR_FIRST_NAME VARCHAR(17)
+    ACTUAL_ENROLLMENT INTEGER NOT NULL -# of people currently registered
+    MAXIMUM_ENROLLMENT INTEGER NOT NULL -# of people that could potentially register
+    SEATS_AVAILABLE INTEGER NOT NULL -# of free seats
+    MEETING_TIME_COUNT INTEGER NOT NULL -if it meets multiple times in one day
+    SCHEDULE_TYPE VARCHAR(2) NOT NULL -lecture, recitation...
+    BUILDING VARCHAR(6) -building name
+    ROOM VARCHAR(10) -room #
+    BEGIN_TIME INTEGER -start time in military format 1100 = 11:00 am, 2300 = 11:00 pm
+    END_TIME INTEGER -end time in same format
+    MONDAY VARCHAR(1) -contains a M if class meets on a monday, NULL otherwise
+    TUESDAY VARCHAR(1) -contains a T if class meets on a tuesday, NULL otherwise
+    WEDNESDAY VARCHAR(1) -contains a W if class meets on a wednesday, NULL otherwise
+    THURSDAY VARCHAR(1) -contains a R if class meets on a thursday, NULL otherwise
+    FRIDAY VARCHAR(1) -contains a F if class meets on a friday, NULL otherwise
+
+*/
+
+
+/* V1 */
+// const connection = mysql.createConnection({
+//     host: "myutschedulerdbinstance.cztvf7ayunfs.us-east-2.rds.amazonaws.com",
+//     user: "seniordesign",
+//     password: "myutscheduler",
+//     database: "myutschedulerdb"
+// });
+
+
+
+
+
+
+
 
 /* ---------- Begin GraphQL Schema ---------- */
 
-/* Example Course Record:
-{
+/* 
+Example Course Record (V1):
+
+{ 
     CourseSection: 'HED 8570/445 SE',
     Days_Met: 'S',
     Start_Date: 2018-08-27T04:00:00.000Z,
@@ -67,6 +118,37 @@ const connection = mysql.createConnection({
     Course_Offering_Id: 52015,
     Same_Time_Link: null 
 }
+
+Example Course Record (V2):
+
+{
+    "TERM": "Fall 2018",
+    "SUBJECT": "ACCT",
+    "COURSE": "3100",
+    "SECTION": 1,
+    "LINK_IDENTIFIER": null,
+    "CRN": 52563,
+    "TITLE": "Financial Accounting and Analysis",
+    "MIN_CREDITS": 3,
+    "MAX_CREDITS": 3,
+    "INSTRUCTOR_LAST_NAME": "Green",
+    "INSTRUCTOR_FIRST_NAME": "Karen",
+    "ACTUAL_ENROLLMENT": 9,
+    "MAXIMUM_ENROLLMENT": 30,
+    "SEATS_AVAILABLE": 21,
+    "MEETING_TIME_COUNT": 1,
+    "SCHEDULE_TYPE": "LE",
+    "BUILDING": "SB",
+    "ROOM": "3160",
+    "BEGIN_TIME": 1110,
+    "END_TIME": 1230,
+    "MONDAY": "M",
+    "TUESDAY": null,
+    "WEDNESDAY": "W",
+    "THURSDAY": null,
+    "FRIDAY": null
+}
+
 */
 const uuidv4 = () => { /* Generates RFC4122 Compliant UUID */
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
@@ -78,7 +160,46 @@ const uuidv4 = () => { /* Generates RFC4122 Compliant UUID */
     );
 }
 
-const courseOfferedRecordType = new GraphQLObjectType({
+const courseOfferedRecordTypeV2 = new GraphQLObjectType({
+    name: 'courseRecord',
+    fields: {
+        id:                     { type: GraphQLID,     resolve: (root, args, context, info) => { return uuidv4(); }},
+        term:                   { type: GraphQLString, resolve: (root, args, context, info) => { return root.TERM } },
+        subject:                { type: GraphQLString, resolve: (root, args, context, info) => { return root.SUBJECT } },
+        course:                 { type: GraphQLString, resolve: (root, args, context, info) => { return root.COURSE } },
+        section:                { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.SECTION } },
+        linkId:                 { type: GraphQLString, resolve: (root, args, context, info) => { return root.LINK_IDENTIFIER } },
+        crn:                    { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.CRN } },
+        title:                  { type: GraphQLString, resolve: (root, args, context, info) => { return root.TITLE } },
+        minCredits:             { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.MIN_CREDITS } },
+        maxCredits:             { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.MAX_CREDITS } },
+        instructorFirstName:    { type: GraphQLString, resolve: (root, args, context, info) => { return root.INSTRUCTOR_FIRST_NAME } },
+        instructorLastName:     { type: GraphQLString, resolve: (root, args, context, info) => { return root.INSTRUCTOR_LAST_NAME } },
+        actualEnrollment:       { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.ACTUAL_ENROLLMENT } },
+        maximumEnrollment:      { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.MAXIMUM_ENROLLMENT } },
+        seatsAvailable:         { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.SEATS_AVAILABLE } },
+        meetingTimeCount:       { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.MEETING_TIME_COUNT } },
+        scheduleType:           { type: GraphQLString, resolve: (root, args, context, info) => { return root.SCHEDULE_TYPE } },
+        building:               { type: GraphQLString, resolve: (root, args, context, info) => { return root.BUILDING } },
+        room:                   { type: GraphQLString, resolve: (root, args, context, info) => { return root.ROOM } },
+        beginTime:              { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.BEGIN_TIME } },
+        endTime:                { type: GraphQLInt,    resolve: (root, args, context, info) => { return root.END_TIME } },
+        days: { 
+            type: new GraphQLList(GraphQLString), 
+            resolve: (root, args, context, info) => { /* We want an array of the days the course is offered */
+                var days = [];
+                if (root.MONDAY != null) { days.push(root.MONDAY); }
+                if (root.TUESDAY != null) { days.push(root.TUESDAY); }
+                if (root.WEDNESDAY != null) { days.push(root.WEDNESDAY); }
+                if (root.THURSDAY != null) { days.push(root.THURSDAY); }
+                if (root.FRIDAY != null) { days.push(root.FRIDAY); }
+                return days;
+            } 
+        }
+    }
+});
+
+const courseOfferedRecordTypeV1 = new GraphQLObjectType({
     name: 'courseRecord',
     fields: {
         id:                 { type: GraphQLID, resolve: (root, args, context, info) => { return uuidv4(); }},
@@ -115,18 +236,12 @@ const departmentWithCourseRecordType = new GraphQLObjectType({
     }
 });
 
-const schema = new GraphQLSchema({
-    // mutation: new GraphQLObjectType({  GraphQL Mutations Go Here 
-    //     name: 'Mutation',
-    //     fields: {
-
-    //     },
-    // }),
+const schemaV2 = new GraphQLSchema({
     query: new GraphQLObjectType({ /* GraphQL Queries Go Here */
         name: 'Query',
         fields: {
             getSubjectsByTermDepartmentCourse: {
-                type: new GraphQLList(courseOfferedRecordType),
+                type: new GraphQLList(courseOfferedRecordTypeV2),
                 args: { 
                     term: { type: GraphQLString },
                     department: { type: GraphQLString },
@@ -150,9 +265,8 @@ const schema = new GraphQLSchema({
                     });
                 }
             },
-
             getSubjectsByTerm: {
-                type: new GraphQLList(courseOfferedRecordType),
+                type: new GraphQLList(courseOfferedRecordTypeV2),
                 args: { term: { type: GraphQLString } },
                 resolve(parent, { term }) {
                     return new Promise((resolve, reject) => {
@@ -170,37 +284,6 @@ const schema = new GraphQLSchema({
                     });
                 }
             },
-
-
-            // getDepartmentsWithCourses: {
-            //     type: new GraphQLList(departmentWithCourseRecordType),
-            //     resolve(parent) {
-            //         return new Promise((resolve, reject) => {
-            //             var final_subjects = [];
-            //             var final_courses= {};
-            //             connection.query(
-            //                 "SELECT DISTINCT Subject FROM CoursesOffered",
-            //                 (error, result, fields) => {
-            //                     if (error) { console.log(error); reject(); }
-
-            //                     result.map((val, idx) => {
-
-            //                         connection.query(
-            //                             "SELE"
-            //                         )
-
-            //                     })
-            //                 }
-            //             );
-
-
-
-                       
-            //         });
-            //     }
-            // },
-
-
             getDepartments: {
                 type: new GraphQLList(GraphQLString),
                 resolve(parent) {
@@ -254,8 +337,115 @@ const schema = new GraphQLSchema({
         }
     })
 });
-app.use('/graphql', graphqlHTTP(req => ({ /* Tell Express to use graphql schema above */
-    schema: schema,
+
+const schemaV1 = new GraphQLSchema({
+    query: new GraphQLObjectType({ /* GraphQL Queries Go Here */
+        name: 'Query',
+        fields: {
+            getSubjectsByTermDepartmentCourse: {
+                type: new GraphQLList(courseOfferedRecordTypeV1),
+                args: { 
+                    term: { type: GraphQLString },
+                    department: { type: GraphQLString },
+                    course: { type: GraphQLString }
+                },
+                resolve(parent, { term, department, course }) {
+                    return new Promise((resolve, reject) => {
+                        connection.query(
+                            "SELECT * FROM CoursesOffered WHERE Term = ? AND Subject = ? AND Course = ?",
+                            [term, department, course],
+                            (err, result, fields) => {
+                                if (err) {
+                                    console.log(error);
+                                    reject();
+                                }
+
+                                console.log(result);
+                                resolve(result);
+                            }
+                        );
+                    });
+                }
+            },
+            getSubjectsByTerm: {
+                type: new GraphQLList(courseOfferedRecordTypeV1),
+                args: { term: { type: GraphQLString } },
+                resolve(parent, { term }) {
+                    return new Promise((resolve, reject) => {
+                        connection.query(
+                            'SELECT * FROM CoursesOffered WHERE Term=?', 
+                            [term], 
+                            (error, result, fields) => {
+                                if (error) {
+                                    console.log(error);
+                                    reject();
+                                }
+                                resolve(result);
+                            }
+                        );
+                    });
+                }
+            },
+            getDepartments: {
+                type: new GraphQLList(GraphQLString),
+                resolve(parent) {
+                    return new Promise((resolve, reject) => {
+                        connection.query(
+                            "SELECT DISTINCT Subject FROM CoursesOffered",
+                            (error, result, fields) => {
+                                if (error) { 
+                                    console.log(error);
+                                    reject();
+                                }
+
+                                var final_res = [];
+                                result.map((val, idx) => {
+                                    final_res[idx] = val.Subject;
+                                })
+                                console.log(final_res);
+                                resolve(final_res);
+                            }
+                        );
+                    });
+                }
+            },
+
+            getCourses: { 
+                type: new GraphQLList(GraphQLString),
+                args: { subject: { type: GraphQLString } },
+                resolve(parent, { subject }) {
+                    return new Promise((resolve, reject) => {
+                        connection.query(
+                            'SELECT DISTINCT Course FROM CoursesOffered WHERE Subject = ?',
+                            [subject],
+                            (error, result, fields) => {
+                                if (error) {
+                                    console.log(error);
+                                    reject();
+                                }
+
+                                var final_res = [];
+                                result.map((val, idx) => {
+                                    final_res[idx] = val.Course;
+                                });
+                                console.log(final_res);
+                                resolve(final_res);
+                            }
+                        );
+                    });
+                }
+            }
+
+        }
+    })
+});
+app.use('/graphqlV1', graphqlHTTP(req => ({ /* Tell Express to use graphql schema above */
+    schema: schemaV1,
+    pretty: true,
+    graphiql: true
+})));
+app.use('/graphqlV2', graphqlHTTP(req => ({ /* Tell Express to use graphql schema above */
+    schema: schemaV2,
     pretty: true,
     graphiql: true
 })));
@@ -268,6 +458,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+app.get('/all', (req, res) => {
+    connection.query(
+        "SELECT * FROM CoursesOffered",
+        (error, result, fields) => {
+            if (error) console.log(error);
+
+            console.log(result);
+            res.send(result);
+        }
+    );
+});
 
 app.get('/departments', (req, res) => {
     connection.query(

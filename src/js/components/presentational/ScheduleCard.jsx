@@ -4,105 +4,99 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
-import Paper from 'material-ui/Paper';
 
-const styles = theme => ({
-  card: {
-  	height: '150px',
-    background: '#0A0A5F',
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    marginBottom: 5,
-    marginTop: 5,
-    fontSize: 16,
-    color: '#CCC',
-  },
+const searchstyle = {
+  height: '800px',
+  width: 300,
+  margin: 10,
+  textAlign: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  marginBottom: '50px'
+};
 
-  p: {
-  	width: '180px',
-    wordBreak: 'normal',
-  	whiteSpace: 'normal',
-	wordWrap: 'normal',
-	color: '#FFF',
-  },
-  edit: {
-  	// display: 'flex',
-  	// flexDirection: 'row',
-   // 	justifyContent: 'flex-end',
-   	marginTop: 'auto',
-   	float: 'right',
-  	color: '#FAFA0A',
-  }
-});
+const pContainerStyle = {
+  textAlign: 'left', 
+  display: 'flex',
+  color: '#CCC',
+  fontSize: '10pt'
+};
 
-const CellHTML = ({show, subject, number, title}) => {
-	return show ? (
-		<div id="registered">
-			<p className="cellhtml">Course: {title}</p>
-			<p className="cellhtml">Subject: {subject} {number}</p>
-	  	</div>
-	) : '';
+const pDivStyle = {
+  display: 'flex', 
+  color: '#FFF',
+  width: '230px',
+  fontSize: '9pt',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+};
+
+const SearchResultLabel = (props) => {
+  return (
+    <div style={pContainerStyle}>
+      <div style={{
+        width: '60px', 
+        marginRight: '10px',
+        fontSize: '9pt',
+        paddingLeft: '5px'
+      }}>
+      {props.title} 
+      </div>
+      <div style={pDivStyle}>{props.body}</div>
+    </div>
+  );
 };
 
 
+/*
+{
+	title: val.title,
+	room: val.building + " " + val.room,
+	section: val.section,
+	days: val.days, 
+	start: val.beginTime, 
+	end: val.endTime,
+	subject: val.subject + " " + val.course + ":" + val.section
+}
+*/
+
 const ScheduleCard = (props) => {
-	const { classes, show, subject, number, title } = props;
+	const { course } = props;
 	return (
-	    <div>
-	      <Paper className={classes.card}>
-	        
-	          <Typography 
-	          	className={classes.title}
-	          >Course: 
-	          </Typography>
-	          <Typography 
-	          	className={classes.p} 
-	          	component="p"
-	          	>
-	             {title}
-	          </Typography>
-	          <Typography 
-	          	className={classes.title}
-	          >Where:
-	          </Typography>
-	          <Typography 
-	          	className={classes.p} 
-	          	component="p"
-	          >
-	             {subject} {number}
-	          </Typography>
-	        
-	       
-	          <Button 
-	          	size="small" 
-	          	className={classes.edit} 
-	          >Modify
-	          </Button>
-	 
-	      </Paper>
-	    </div>
+	    
+		 <div 
+            style={{
+              width: '180px',
+              height: '145px',
+              margin: '10px 10px 10px 10px',
+              backgroundColor: '#003e7e'
+            }}
+            key={course.id}>
+              <SearchResultLabel 
+              	title="Title: " body={course.title} />
+              <SearchResultLabel 
+              	title="Room: " body={course.room} />
+              <SearchResultLabel 
+              	title="Days: " body={course.days} />
+              <SearchResultLabel 
+              	title="When: " 
+              	body={course.start + " - " + course.end} />
+              <SearchResultLabel 
+              	title="Subject: " 
+              	body={course.subject} />
+              <Button 
+                type="Raised" 
+                style ={{
+                  marginTop: 'auto',
+                  float: 'right',
+                  color: '#FAFA0A',
+                }} 
+               >Modify</Button>
+        </div>
+
+
   	);
 };
 
-ScheduleCard.propTypes = {
-	classes: PropTypes.object.isRequired,
-	show: PropTypes.bool.isRequired,
-	subject: PropTypes.string,
-	number: PropTypes.string,
-	title: PropTypes.string
-};
-ScheduleCard.defaultProps = {
-	classes: null,
-	show: false,
-	subject: '',
-	number: '',
-	title: ''
-};
-
-export default withStyles(styles)(ScheduleCard);
+export default ScheduleCard;

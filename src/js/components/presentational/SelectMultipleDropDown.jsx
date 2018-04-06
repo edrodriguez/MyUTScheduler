@@ -127,6 +127,32 @@ const SemestersFieldBase = (props) => {
         </div>
     );
 };
+
+
+/* V1 Keys:
+  id
+  section       
+  daysMet       
+  startDate     
+  endDate
+  startTime
+  endTime
+  room
+  term           
+  crossList      
+  status         
+  sectionTitle   
+  roomNum   
+  roomName    
+  buildingName
+  campus 
+  course     
+  subject   
+  sectionNum 
+  instructor
+  courseOfferingId
+  sameTimeLink
+*/  
 const SemestersField = compose(
   graphql(gql`
     query SearchClassesGetSubjectsByTermDeptCourse (
@@ -138,28 +164,28 @@ const SemestersField = compose(
         term: $term,
         department: $department,
         course: $course) {
-         id
-         section       
-         daysMet       
-         startDate     
-         endDate
-         startTime
-         endTime
-         room
-         term           
-         crossList      
-         status         
-         sectionTitle   
-         roomNum   
-         roomName    
-         buildingName
-         campus 
-         course     
-         subject   
-         sectionNum 
-         instructor
-         courseOfferingId
-         sameTimeLink
+          id                
+          term               
+          subject            
+          course             
+          section            
+          linkId             
+          crn                
+          title              
+          minCredits         
+          maxCredits         
+          instructorFirstName
+          instructorLastName 
+          actualEnrollment   
+          maximumEnrollment  
+          seatsAvailable     
+          meetingTimeCount   
+          scheduleType       
+          building           
+          room               
+          beginTime          
+          endTime            
+          days 
       }
     }
   `, {
@@ -169,34 +195,6 @@ const SemestersField = compose(
         term: StateData.semester,
         department: StateData.department,
         course: StateData.course,
-      }
-    }
-  }),
-  graphql(
-    gql`
-      query SearchClassesGetSubjectsByTerm ($term: String!) {
-        getSubjectsByTerm(term: $term) {
-          id
-          section       
-          daysMet       
-          startDate     
-          endDate
-          startTime
-          endTime
-          room    
-          sectionTitle    
-          buildingName
-          campus 
-          course     
-          subject   
-          sectionNum 
-        }
-      }
-  `, {
-    name: 'get_subjects_by_term',
-    options: {
-      variables: {
-        term: StateData.semester
       }
     }
   }),
