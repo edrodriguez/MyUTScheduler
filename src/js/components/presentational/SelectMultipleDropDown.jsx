@@ -27,14 +27,20 @@ export const StateData = {
   course: ''
 };
 
+const selectStyle = {
+  width: '280px',
+  margin: '10px 0px 10px 0px'
+};
+
 const SemestersFieldBase = (props) => {
   return (
-      <div className="section">
+      <div className="section" style={{width: '280px', margin: '0px 10px 10px 10px'}}>
         <Select
           id="state-select"
           ref={(ref) => { 
             props.updateRefToSelect(ref);
           }}
+          style={selectStyle}
           onBlurResetsInput={false}
           onSelectResetsInput={false}
           autoFocus
@@ -66,6 +72,7 @@ const SemestersFieldBase = (props) => {
               ref={(ref) => { 
                 props.updateRefToSelect(ref);
               }}
+              style={selectStyle}
               onBlurResetsInput={false}
               onSelectResetsInput={false}
               autoFocus
@@ -105,6 +112,7 @@ const SemestersFieldBase = (props) => {
                 ref={(ref) => { 
                   props.updateRefToSelect(ref);
                 }}
+                style={selectStyle}
                 onBlurResetsInput={false}
                 onSelectResetsInput={false}
                 autoFocus

@@ -73,7 +73,7 @@ const uuidv4 = () => { /* Generates RFC4122 Compliant UUID */
 };
 
 const searchstyle = {
-  height: '800px',
+  height: '900px',
   width: 300,
   margin: 10,
   textAlign: 'center',
@@ -122,6 +122,19 @@ const LeftPanel = (props) => {
   return (
     <div>
         <Paper style={searchstyle} zDepth={2}>
+          <div style={{width: '100%'}}>
+          <Typography 
+            variant="title" 
+            color="inherit" 
+            style={{
+              color: '#0F3e7e',
+              display: 'block',
+              float: 'left',
+              margin: '10px 10px 0px 10px'
+            }}>
+            Add Classes:
+            </Typography>
+          </div>
           <SemestersField />
           <div style={ 
             {

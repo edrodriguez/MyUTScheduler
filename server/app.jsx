@@ -3,6 +3,7 @@ import path from 'path';
 import mysql from 'mysql';
 import bodyParser from 'body-parser';
 import { Server } from 'http';
+import cors from 'cors';
 import request from 'request';
 
 import { 
@@ -439,6 +440,8 @@ const schemaV1 = new GraphQLSchema({
         }
     })
 });
+app.use(cors()); /* Cross Origin Access */
+
 app.use('/graphqlV1', graphqlHTTP(req => ({ /* Tell Express to use graphql schema above */
     schema: schemaV1,
     pretty: true,
@@ -453,7 +456,6 @@ app.use('/graphqlV2', graphqlHTTP(req => ({ /* Tell Express to use graphql schem
 
 /* serves up index.html from dist */
 app.use(express.static(path.join(__dirname,"../dist")));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true

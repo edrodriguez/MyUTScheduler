@@ -64,6 +64,14 @@ const SearchResultLabel = (props) => {
 }
 */
 
+/* To be displayed in the Alert dialog 
+
+<SearchResultLabel 
+	title="Room: " body={course.room} />
+<SearchResultLabel 
+	title="Days: " body={course.days} />
+*/
+
 
 const ScheduleCard = (props) => {
 	const { course } = props;
@@ -71,32 +79,41 @@ const ScheduleCard = (props) => {
 	    
 		 <div 
             style={{
-              width: '180px',
-              height: '145px',
-              margin: '10px 10px 10px 10px',
-              backgroundColor: '#003e7e'
+            	borderRight: '2px solid #003e7e',
+				borderBottom: '2px solid #003e7e',
+				// marginBottom: '5px',
+              // width: '180px',
+               height: '100px',
+              // margin: '10px 10px 10px 10px',
+              backgroundColor: 'rgba(0, 62, 126, 0.6)', //'#003e7e'
             }}
             key={course.id}>
-              <SearchResultLabel 
-              	title="Title: " body={course.title} />
-              <SearchResultLabel 
-              	title="Room: " body={course.room} />
-              <SearchResultLabel 
-              	title="Days: " body={course.days} />
+            	<div style={pContainerStyle}>
+			      <div style={{
+			        width: '60px', 
+			        marginRight: '10px',
+			        fontSize: '9pt',
+			        paddingLeft: '5px'
+			      }}>
+			      Class: 
+			      </div>
+			      <div style={pDivStyle}>{course.title}<br/>{course.subject}</div>
+			    </div>
+
+              
               <SearchResultLabel 
               	title="When: " 
-              	body={parseTime(course.start) + " - " + parseTime(course.end)} />
-              <SearchResultLabel 
-              	title="Subject: " 
-              	body={course.subject} />
+              	body={parseTime(course.start) + " - " + parseTime(course.end)} 
+              />
               <Button 
-                type="Raised" 
+                type="Raised"
+                size="small" 
                 style ={{
                   marginTop: 'auto',
                   float: 'right',
                   color: '#FAFA0A',
                 }} 
-               >Modify</Button>
+               >Details</Button>
         </div>
 
 

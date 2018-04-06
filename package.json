@@ -25,6 +25,7 @@
     "autoprefixer-loader": "^3.2.0",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "cors": "^2.8.4",
     "create-react-class": "^15.6.3",
     "css-loader": "^0.28.10",
     "express": "^4.16.2",
