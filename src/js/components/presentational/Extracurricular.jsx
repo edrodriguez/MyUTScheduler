@@ -47,7 +47,9 @@ const styles = theme => ({
 	    },
 	  },
 	  textFieldFormLabel: {
-	    fontSize: 18,
+	    fontSize: '1.3125rem',
+		fontWeight: '500',
+		lineHeight: '1.16667em'
 	  },
 });
 
@@ -67,11 +69,12 @@ class Extracurricular extends Component {
 		super(props);
 		this.state = {
 			selectValue: '',
+			description: ''
 		};
 	}
 
 	render() {
-		const { classes } = this.props;
+		const { classes, updateActivitiesHandler } = this.props;
 		return (
 			<div style={{
 				display: 'flex',
@@ -122,9 +125,12 @@ class Extracurricular extends Component {
 					          name="selected-state"
 					          disabled={false}
 					          value={this.state.selectValue}
-					          onChange={(newValue) => {
-					          	this.setState({selectValue: newValue});
-					          }}
+					          onChange={
+					          	(newValue) => {
+					          		console.log("Updated State: {selectValue: " + newValue + "}");
+					          		this.setState({selectValue: newValue});
+					          	}
+					          }
 					          rtl={false}
 					          searchable={true}
 					        />
@@ -134,6 +140,61 @@ class Extracurricular extends Component {
 					        defaultValue=""
 					        label="Description"
 					        id="bootstrap-input"
+					        onChange={
+					        	(input) => {
+					        		console.log(input.target.value);
+					        		console.log("Updated State: {description: " + input.target.value + "}");
+					        		this.setState({description: input.target.value});
+					        	}
+					        }
+					        InputProps={{
+					          disableUnderline: true,
+					          classes: {
+					            root: classes.textFieldRoot,
+					            input: classes.textFieldInput,
+					          },
+					        }}
+					        InputLabelProps={{
+					          shrink: true,
+					          className: classes.textFieldFormLabel,
+					        }}
+					      />
+					      <TextField
+				        	style={{margin: "10px 10px 10px 10px"}}
+					        defaultValue=""
+					        label="Description"
+					        id="bootstrap-input"
+					        onChange={
+					        	(input) => {
+					        		console.log(input.target.value);
+					        		console.log("Updated State: {description: " + input.target.value + "}");
+					        		this.setState({description: input.target.value});
+					        	}
+					        }
+					        InputProps={{
+					          disableUnderline: true,
+					          classes: {
+					            root: classes.textFieldRoot,
+					            input: classes.textFieldInput,
+					          },
+					        }}
+					        InputLabelProps={{
+					          shrink: true,
+					          className: classes.textFieldFormLabel,
+					        }}
+					      />
+					      <TextField
+				        	style={{margin: "10px 10px 10px 10px"}}
+					        defaultValue=""
+					        label="Description"
+					        id="bootstrap-input"
+					        onChange={
+					        	(input) => {
+					        		console.log(input.target.value);
+					        		console.log("Updated State: {description: " + input.target.value + "}");
+					        		this.setState({description: input.target.value});
+					        	}
+					        }
 					        InputProps={{
 					          disableUnderline: true,
 					          classes: {
@@ -152,10 +213,28 @@ class Extracurricular extends Component {
 
 					    	margin: '45px 10px 10px 10px'
 					      }}>
-						    <Button variant="raised" style={{
-						    	backgroundColor: '#0F3e7e', 
-						    	color: '#ffd200',
-						    }}>
+						    <Button 
+						    	variant="raised" 
+						    	style={{
+							    	backgroundColor: '#0F3e7e', 
+							    	color: '#ffd200',
+							    }}
+							    onClick={
+							    	(e) => {
+							    		console.log(
+							    			"Updating Activities: { title: " + 
+							    			this.state.selectValue + 
+							    			", description: " + 
+							    			this.state.description + 
+							    			" }"
+							    		);
+							    		updateActivitiesHandler({
+							    			title: this.state.selectValue,
+							    			description: this.state.description
+							    		});
+							    	}
+							    }
+							>
 						        Schedule
 						    </Button>
 					    </div>

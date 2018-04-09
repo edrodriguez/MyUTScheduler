@@ -2,7 +2,6 @@ import express from 'express';
 import path from 'path';
 import mysql from 'mysql';
 import bodyParser from 'body-parser';
-import { Server } from 'http';
 import cors from 'cors';
 import request from 'request';
 
@@ -441,7 +440,7 @@ const schemaV1 = new GraphQLSchema({
     })
 });
 app.use(cors()); /* Cross Origin Access */
-
+const server = new Server(app);
 app.use('/graphqlV1', graphqlHTTP(req => ({ /* Tell Express to use graphql schema above */
     schema: schemaV1,
     pretty: true,
@@ -455,11 +454,16 @@ app.use('/graphqlV2', graphqlHTTP(req => ({ /* Tell Express to use graphql schem
 /* ---------- End GraphQL Schema ---------- */
 
 /* serves up index.html from dist */
-app.use(express.static(path.join(__dirname,"../dist")));
+app.use(express.static(path.join(__dirname, "../dist/client")));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+app.get('/', (req, res) => { /* Serve our html from the production server */
+    res.sendFile(path.resolve('dist/server/public/index.html'));
+});
 
 app.get('/all', (req, res) => {
     connection.query(
@@ -506,4 +510,5 @@ app.get('/terms', (req, res) => {
     connection.end();
 });
 
-app.listen(7777,() => { console.log("Started listening on port", 7777); })
+app.listen(7777,() => { console.log("Started listening on port", 7777); });
+

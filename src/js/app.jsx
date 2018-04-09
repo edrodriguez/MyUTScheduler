@@ -44,13 +44,22 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { classes: [] };
+		this.state = { 
+			classes: [], 
+			activities: [] 
+		};
 		this.updateClassesHandler = this.updateClassesHandler.bind(this);
+		this.updateActivitiesHandler = this.updateActivitiesHandler.bind(this);
 	}
 
 	updateClassesHandler(classes) {
 		console.log("HANDLER CALLBACK CALLED.");
-		this.setState({classes: classes})
+		this.setState({classes: classes});
+	}
+
+	updateActivitiesHandler(activities) {
+		console.log("ACTIVITIES CALLBACK CALLED.");
+		this.setState({activities: activities});
 	}
 
 	render() {
@@ -64,10 +73,17 @@ class App extends Component {
 					alignContent: 'top',
               		alignItems: 'left',
 			}}>
-				<SearchClasses updateClassesHandler={this.updateClassesHandler}/>
+				<SearchClasses 
+					updateClassesHandler={this.updateClassesHandler}
+				/>
 				<div style={{display: 'flex', flexDirection: 'column'}}>
-					<Extracurricular />
-					<DisplayCalendar classes={this.state.classes} />
+					<Extracurricular 
+						updateActivitiesHandler={this.updateActivitiesHandler}
+					/>
+					<DisplayCalendar 
+						classes={this.state.classes} 
+						activities={this.state.activities} 
+					/>
 				</div>
 			</div>
 			</div>

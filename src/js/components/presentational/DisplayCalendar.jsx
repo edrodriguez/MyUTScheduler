@@ -63,6 +63,14 @@ const ScheduleComponent = (props) => {
 			// backgroundColor: '#414141', 
 			margin: '5px 5px 5px 5px'
 		}}>
+
+			{
+				props.activities.map((activity, index) => {
+					console.log(activity);
+					/* TODO: add time information to activity */
+				})
+			}
+
 			{
 				props.classes.map((course, index) => {
 					console.log(course);
@@ -94,7 +102,7 @@ const CalendarTimeColumn = (props) => {
 			height: '800px'
 		}}>
 			<div style={{
-				width: '150px',
+				width: '100px',
 				height: '20px',
 				backgroundColor: '#003e7e',
 				margin: '10px 10px 10px 10px'
@@ -115,15 +123,17 @@ const CalendarTimeColumn = (props) => {
 						alignItems: 'center', 
 						display: 'flex', 
 						height: '100px',
+						textAlign: 'right',
 
-						borderRight: '2px solid #333',
-						borderBottom: '2px solid #333',
+						// borderRight: '2px solid #333',
+						// borderBottom: '2px solid #333',
 						marginBottom: '5px',
+						marginRight: '10px',
 
 						// borderRadius: '0px 2px 2px 0px',
 						// border: 'solid #AAA',
 						// background: '#AAA',
-						justifyContent: 'center',
+						justifyContent: 'right',
 						color: '#BBB'
 					}}>
 						{val}
