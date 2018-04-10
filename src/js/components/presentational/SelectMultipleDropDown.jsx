@@ -6,7 +6,6 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 const Semesters = [
-  { value: 'Spring 2018', label: 'Spring 2018'},
   { value: 'Summer 2018', label: 'Summer 2018'},
   { value: 'Fall 2018', label: 'Fall 2018'}
 ];

@@ -1,13 +1,14 @@
+import uuid from 'uuid';
 import React, { Component } from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 
-import ScheduleCard from './ScheduleCard.jsx';
+import { ScheduleCard, ExtracurricularCard } from '../calendar_cards/CalendarCards.jsx';
 import Typography from 'material-ui/Typography';
 
 const Parameters = {
-	columnWidth: '200px',
+	columnWidth: '100%',
 	columnHeight: '100px',
 	columnMinHeight: '140px'
 };
@@ -51,23 +52,23 @@ const Times = [
 ];
 
 const ScheduleComponent = (props) => {
-	const { timeSlot } = props;
+	const { timeSlot, activities } = props;
 	return (
-		<div style={{
-			width: Parameters.columnWidth, 
-			height: '100px',
-			// background: 'transparent',
-			//borderRight: '2px solid #003e7e',
-			// borderBottom: '2px solid #003e7e',
-			backgroundColor: 'rgba(0.3, 0.3, 0.3, 0.02)',
-			// backgroundColor: '#414141', 
-			margin: '5px 5px 5px 5px'
-		}}>
-
+		<div className="schedule-component-slot">
 			{
-				props.activities.map((activity, index) => {
+				activities.map((activity, index) => {
+					console.log("Got Activity: ");
 					console.log(activity);
-					/* TODO: add time information to activity */
+					const i = substring(activity.startTime + "") + "";
+					console.log(i);
+					let x = IndexToTime[i];
+					console.log("X: ", x, "Index: ", timeSlot);
+					
+					if (timeSlot == x) {
+						if (activity.day == props.value) {
+							return <ExtracurricularCard key={uuid()} extracurricular={activity} />
+						}						
+					}
 				})
 			}
 
@@ -80,64 +81,44 @@ const ScheduleComponent = (props) => {
 					console.log("X: ", x, "Index: ", timeSlot);
 					
 					if (timeSlot == x) {
+
+						
 						return course.days.map((day) => {
 							if (day == props.value) {
 								console.log("WE HIT IT LAD WEW");
-								return <ScheduleCard course={course} />	
+								return <ScheduleCard key={uuid()} course={course} />	
 							}
 						})
+						
+					} else {
+						if (timeSlot == 9 && course.room == "OC DL ONLINE") {
+							return <ScheduleCard key={uuid()} course={course} />
+						}
+						
 					}
 				})	
 			}
 	</div>);
 };
 
-
 const CalendarTimeColumn = (props) => { 
 	const { title } = props;
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			height: '800px'
-		}}>
-			<div style={{
-				width: '100px',
-				height: '20px',
-				backgroundColor: '#003e7e',
-				margin: '10px 10px 10px 10px'
-			}}>
-				<Typography style={{
-					alignItems: 'center', 
-					display: 'flex', 
-					justifyContent: 'center',
-					color: '#ffd200'
-				}}>{title}</Typography>
+		<div className="calendar-time-column">
+			<div className="calendar-time-header">
+				<Typography className="calendar-time-header-typography">
+					{title}
+				</Typography>
 			</div>
-
-
 			{Times.map((val, idx) => {
-				return <Typography 
-					key={idx}
-					style={{
-						alignItems: 'center', 
-						display: 'flex', 
-						height: '100px',
-						textAlign: 'right',
-
-						// borderRight: '2px solid #333',
-						// borderBottom: '2px solid #333',
-						marginBottom: '5px',
-						marginRight: '10px',
-
-						// borderRadius: '0px 2px 2px 0px',
-						// border: 'solid #AAA',
-						// background: '#AAA',
-						justifyContent: 'right',
-						color: '#BBB'
-					}}>
+				return (
+					<Typography 
+						key={idx}
+						className="calendar-time-column-typography"
+					>
 						{val}
 					</Typography>
+				)
 			})}
 
 		</div>
@@ -146,24 +127,9 @@ const CalendarTimeColumn = (props) => {
 
 const CalendarColumn = (props) => {
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			height: '800px'
-		}}>
-		{props.classes ? console.log("WEWDYDOO") : ''}
-			<div style={{
-				width: Parameters.columnWidth, 
-				height: '20px', 
-				backgroundColor: '#003e7e', 
-				margin: '10px 5px 10px 5px'
-			}}>
-				<Typography style={{
-					alignItems: 'center', 
-					display: 'flex', 
-					justifyContent: 'center',
-					color: '#ffd200'
-				}}>{props.title}</Typography>
+		<div className="calendar-column">
+			<div className="calendar-column-header">
+				<Typography className="calendar-column-header-typography">{props.title}</Typography>
 			</div>
 			<ScheduleComponent timeSlot={0} {...props} />
 			<ScheduleComponent timeSlot={1} {...props} />
@@ -174,7 +140,7 @@ const CalendarColumn = (props) => {
 			<ScheduleComponent timeSlot={6} {...props} />
 			<ScheduleComponent timeSlot={7} {...props} />
 			<ScheduleComponent timeSlot={8} {...props} />
-			<ScheduleComponent timeSlot={8} {...props} />
+			<ScheduleComponent timeSlot={9} {...props} />
 		</div>
 	);
 }

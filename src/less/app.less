@@ -9,16 +9,230 @@ th:hover {
 	color: @th-color-hover;
 }
 
-.searchstyle {
-	height: '800px';
-	width: 300;
-	margin: 10;
-	text-align: 'center';
-	display: 'flex';
-	flex-direction: 'column';
-	justify-content: 'flex-start';
-	margin-bottom: '50px';
+/* --------- Begin Time Column --------- */
+.calendar-time-column {
+	display: flex;
+	flex-direction: column;
+	height: 800px;
 }
+
+.calendar-time-header {
+	width: 100px;
+	height: 20px;
+	background-color: #003e7e;
+	margin: 10px 10px 10px 10px;
+}
+
+.calendar-time-header-typography {
+	align-items: center;
+	display: flex; 
+	justify-content: center;
+	color: #ffd200;
+}
+
+.calendar-time-column-typography {
+	align-items: center;
+	display: flex;
+	height: 100px;
+	text-align: right;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	justify-content: right;
+	color: #BBB;
+}
+/* --------- End Time Column --------- */
+
+/* --------- Begin Calendar Column --------- */
+.calendar-column {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 0px 5px 0px 5px;
+	height: 800px;
+}
+
+.calendar-column-header {
+	width: 100%;
+	height: 20px;
+	background-color: #003e7e; 
+	margin: 10px 5px 10px 5px;
+}
+
+.calendar-column-header-typography {
+	align-items: center; 
+	display: flex;
+	justify-content: center;
+	color: #ffd200;
+}
+
+/* --------- End Calendar Column --------- */
+
+
+/* --------- Begin Schedule Components --------- */
+.schedule-component-slot {
+	width: 100%;
+	min-width: 200px;
+	max-width: 300px;
+	height: 100%;
+	justify-content: center;
+	align-content: center;
+	background-color: rgba(0.3, 0.3, 0.3, 0.02);
+	margin: 5px 5px 5px 5px;
+}
+
+/* --------- End Schedule Components --------- */
+
+/* --------- Begin Search Column --------- */
+.search-column {
+	position: relative;
+	height: 900px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: transparent;
+	border-radius: 13px;
+	background-color: rgba(0, 62, 126, 0.1);
+	width: 300;
+	margin: 10px 0px 50px 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.search-column-scroll-area {
+	margin-top: 50px;
+	height: 600px;
+	width: 300px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	overflow: scroll;
+}
+
+.search-column-result-component {
+	padding-top: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: transparent;
+	border-radius: 13px;
+	background-color: rgba(0, 62, 126, 0.4);
+	width: 280px;
+	height: 160px;
+	margin: 5px 10px 5px 10px;
+}
+/* --------- End Search Column --------- */
+
+
+/* --------- Begin Extracurricular --------- */
+
+.extracurricular-row-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-content: top;
+	align-items: left;
+	margin: 10px 10px 0px 10px;
+}
+
+.extracurricular-row-container-paper {
+	border-style: solid;
+	border-width: 1px;
+	border-color: transparent;
+	border-radius: 13px;
+	background-color: rgba(0, 62, 126, 0.1);
+	width: 100%;
+	height: 100px;
+}
+
+.extracurricular-row-container-flexbox {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.extracurricular-activities-leading-column {
+	width: 300px;
+	margin: 10px 10px 10px 10px;
+}
+
+/* --------- End Extracurricular --------- */
+
+
+.big-blue-typography-label {
+	color: #0F3e7e; 
+	margin: 0px 10px 10px 0px;
+}
+.big-blue-typography-label-classes {
+	color: #0F3e7e;
+	display: block;
+	float: left;
+	margin: 10px 10px 0px 10px;
+}
+
+
+.show-gradient {
+	display: block;
+}
+
+.hide-gradient {
+	display: none;
+}
+
+.scroll-gradient {
+	position: absolute;
+	pointer-events: none;
+	top: 683px;
+	width: 280px;
+	height: 160px;
+	margin-left: 10px;
+	margin-top: auto;
+	background: linear-gradient(top, rgba(0, 0, 0, 0.5), transparent);
+	background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5));
+	z-index: 1000;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
+}
+
+/* --------- Begin Schedule Card --------- */
+
+.p-container-style-search {
+	text-align: left; 
+	display: flex;
+	color: #EEE;
+	font-size: 10pt;
+}
+.p-div-style-search {
+	display: flex; 
+	color: #FFF;
+	width: 230px;
+	font-size: 1.0em;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.p-container-style-title {
+	width: 60px;
+	margin-right: 10px;
+	font-size: 1.0em;
+	margin-left: 10px;
+}
+.schedule-card {
+	border-style: solid;
+	border-width: 1px;
+	border-color: transparent;
+	border-radius: 13px;
+	background-color: rgba(0, 62, 126, 0.4);
+	width: 200px;
+	margin: auto;
+	height: 100px;
+	margin-top: 10px;
+}
+
+/* --------- End Schedule Card --------- */
+
+
 .schedule {
 	float: left;
 	display: block;
@@ -37,8 +251,6 @@ th:hover {
 	position: absolute;
 	margin-left: 350px;
 	margin-right: 15px;
-	//margin-left: 10px;
-	//margin-right: 50px;
 	float: left;
 	width: auto;
 	display: block;

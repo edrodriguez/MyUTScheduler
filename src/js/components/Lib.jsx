@@ -10,6 +10,7 @@ export const addPadding = (number, length) => {
 }
 
 export const parseTime = (time) => {
+  if (time == null) { return "All Day" }
   var returnTime;
   var hour;
   var min;
@@ -25,7 +26,7 @@ export const parseTime = (time) => {
     min = time % 100;
     min = addPadding(min,2);
     
-    returnNum = hour + ":" + min + am;
+    returnTime = hour + ":" + min + am;
   }
   //pm time
   else if (time >= 1200 && time < 2400){

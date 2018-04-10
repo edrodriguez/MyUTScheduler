@@ -18,62 +18,25 @@ import { withStyles } from 'material-ui/styles';
 
 import SemestersField, { StateData } from './SelectMultipleDropDown.jsx';
 
-/* We want to update this with the final search */
-import { calendarData } from '../../SchedulerGlobals.jsx';
-
-
 import { parseTime } from '../Lib.jsx';
 
 /* Apollo */
 import { gql } from 'apollo-boost';
 import { Query, graphql } from 'react-apollo';
 
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from 'material-ui/Dialog';
-
 /* Recompose */
 import { compose, lifecycle, withState, withProps, withHandlers, withStateHandlers } from 'recompose';
 
-
-const AlertDialog = (props) => {
-  return (
-    <Dialog
-      open={props.dialogOpen}
-      onClose={props.handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">{"Oops!"}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Please select Semester, Department, and Course to search for the classes you need.
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleClose} color="primary" autoFocus>
-          Ok
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
-
-const uuidv4 = () => { /* Generates RFC4122 Compliant UUID */
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-        /[xy]/g, 
-        (c) => {
-            let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        }
-    );
-};
+import { AlertDialog } from '../dialogs/Dialogs.jsx';
 
 const searchstyle = {
+  position: 'relative',
   height: '900px',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  borderColor: 'transparent',
+  borderRadius: '13px',
+  backgroundColor: 'rgba(0, 62, 126, 0.1)',
   width: 300,
   margin: 10,
   textAlign: 'center',
@@ -83,34 +46,13 @@ const searchstyle = {
   marginBottom: '50px'
 };
 
-const pContainerStyle = {
-  textAlign: 'left', 
-  display: 'flex',
-  color: '#CCC',
-  fontSize: '10pt'
-};
-
-const pDivStyle = {
-  display: 'flex', 
-  color: '#FFF',
-  width: '230px',
-  fontSize: '9pt',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-};
-
 const SearchResultLabel = (props) => {
   return (
-    <div style={pContainerStyle}>
-      <div style={{
-        width: '60px', 
-        marginRight: '10px',
-        fontSize: '9pt',
-        paddingLeft: '5px'
-      }}>
-      {props.title} 
+    <div className="p-container-style-search">
+      <div className="p-container-style-title">
+        {props.title} 
       </div>
-      <div style={pDivStyle}>{props.body}</div>
+      <div className="p-div-style-search">{props.body}</div>
     </div>
   );
 };
@@ -119,47 +61,27 @@ const SearchResultLabel = (props) => {
 
 /* For date new Date(val.startDate).toLocaleDateString() */
 const LeftPanel = (props) => {
+
+  props.handleGradientHide();
   return (
     <div>
-        <Paper style={searchstyle} zDepth={2}>
+        <div className="search-column">
           <div style={{width: '100%'}}>
-          <Typography 
-            variant="title" 
-            color="inherit" 
-            style={{
-              color: '#0F3e7e',
-              display: 'block',
-              float: 'left',
-              margin: '10px 10px 0px 10px'
-            }}>
-            Add Classes:
+            <Typography variant="title" color="inherit" className="big-blue-typography-label-classes">
+              Add Classes:
             </Typography>
           </div>
           <SemestersField />
-          <div style={ 
-            {
-              marginTop: '50px',
-              height: '500px',
-              width: '300px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-              overflow: 'scroll'
-            }
-          }>
+          <div className={"scroll-gradient" + props.showGradient}>
+          </div>
+          <div className="search-column-scroll-area">
             {
               props.classes.length > 0 ? props.classes.map((val, idx) => {
-                  return <div 
-                    style={{
-                      width: '280px',
-                      height: '160px',
-                      margin: '10px 10px 10px 10px',
-                      backgroundColor: '#003e7e'
-                    }}
-                    key={val.id}>
+                  props.handleGradientShow();
+                  return <div className="search-column-result-component" key={val.id}>
                       <SearchResultLabel title="Title: " body={val.title} />
-                      <SearchResultLabel title="Room: " body={val.building + " " + val.room} />
-                      <SearchResultLabel title="Days: " body={val.days} />
+                      {val.room == null ? 'NA' : <SearchResultLabel title="Room: " body={val.building + " " + val.room} /> }
+                      {val.days.length == 0 ? '' : <SearchResultLabel title="Days: " body={val.days} />}
                       <SearchResultLabel title="When: " body={parseTime(val.beginTime) + " - " + parseTime(val.endTime)} />
                       <SearchResultLabel title="Subject: " body={val.subject + " " + val.course + ":" + val.section} />
                       <Button 
@@ -167,48 +89,55 @@ const LeftPanel = (props) => {
                         style ={{
                           marginTop: 'auto',
                           float: 'right',
-                          color: '#FAFA0A',
+                          color: '#ffd200',
                         }} 
                         onClick={
                           (e) => {
-
-                              /* 
-                                id                
-                                term               
-                                subject            
-                                course             
-                                section            
-                                linkId             
-                                crn                
-                                title              
-                                minCredits         
-                                maxCredits         
-                                instructorFirstName
-                                instructorLastName 
-                                actualEnrollment   
-                                maximumEnrollment  
-                                seatsAvailable     
-                                meetingTimeCount   
-                                scheduleType       
-                                building           
-                                room               
-                                beginTime          
-                                endTime            
-                                days 
-                              */
-
                               console.log("Registered Class.");
-                              calendarData.classes.push({
+                              console.log({
                                 title: val.title,
                                 room: val.building + " " + val.room,
                                 section: val.section,
                                 days: val.days, 
                                 start: val.beginTime, /* TODO: Filter this from an int to actual time value */
                                 end: val.endTime,
-                                subject: val.subject + " " + val.course + ":" + val.section
+                                subject: val.subject + " " + val.course + ":" + val.section,
+                                term: val.term,                       
+                                course: val.course,           
+                                linkId: val.linkId,          
+                                crn: val.crn,         
+                                minCredits: val.minCredits,         
+                                maxCredits: val.maxCredits,
+                                instructorFirstName: val.instructorFirstName,
+                                instructorLastName: val.instructorLastName,
+                                actualEnrollment: val.actualEnrollment,
+                                maximumEnrollment: val.maximumEnrollment,
+                                seatsAvailable: val.seatsAvailable,
+                                meetingTimeCount: val.meetingTimeCount,
+                                scheduleType: val.scheduleType
                               });
-                              console.log(calendarData);
-                              props.updateClassesHandler(calendarData.classes);
+                              props.updateClassesHandler({
+                                title: val.title,
+                                room: val.building + " " + val.room,
+                                section: val.section,
+                                days: val.days, 
+                                start: val.beginTime, /* TODO: Filter this from an int to actual time value */
+                                end: val.endTime,
+                                subject: val.subject + " " + val.course + ":" + val.section,
+                                term: val.term,         
+                                course: val.course,           
+                                linkId: val.linkId,          
+                                crn: val.crn,         
+                                minCredits: val.minCredits,         
+                                maxCredits: val.maxCredits,
+                                instructorFirstName: val.instructorFirstName,
+                                instructorLastName: val.instructorLastName,
+                                actualEnrollment: val.actualEnrollment,
+                                maximumEnrollment: val.maximumEnrollment,
+                                seatsAvailable: val.seatsAvailable,
+                                meetingTimeCount: val.meetingTimeCount,
+                                scheduleType: val.scheduleType
+                              });
                           }
                         }>Schedule</Button>
                   </div>
@@ -218,6 +147,7 @@ const LeftPanel = (props) => {
           </div>
 
           <Button 
+            variant="raised"
             size="small" 
             onClick={(e) => {
               console.log(props);
@@ -242,16 +172,18 @@ const LeftPanel = (props) => {
               }
             }}
             style={{
+              backgroundColor: '#0F3e7e', 
+              margin: '10px 10px 10px 10px',
+              color: '#ffd200',
               display: 'flex', 
-              alignContent: 'bottom',
               alignItems: 'center',
-              marginTop: 'auto'
+              marginTop: 'auto',
             }}
           >
           Search
           </Button>
           <AlertDialog {...props} />
-        </Paper>
+        </div>
     </div>
   );
 };
@@ -304,6 +236,8 @@ const SearchClassesBase = compose(
   withState('expanded', 'handleExpansionPanel', null),
   withStateHandlers(
     { /* State */
+
+      showGradient: ' hide-gradient',
       dialogOpen: false,
       classes: [],
       departments: [],
@@ -324,6 +258,16 @@ const SearchClassesBase = compose(
       expanded_panel: null, /* For the expansion panels */
     },
     { /* State Handlers */
+      handleGradientHide: props => event => {
+        return {
+          showGradient: ' hide-gradient'
+        }
+      },
+      handleGradientShow: props => event => {
+        return {
+          showGradient: ' show-gradient' 
+        }
+      },
       handleStateUpdate: props => event => {
         console.log("Handle state update clicked.");
         

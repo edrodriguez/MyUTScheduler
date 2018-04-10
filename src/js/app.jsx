@@ -19,8 +19,6 @@ import Extracurricular from "./components/presentational/Extracurricular.jsx";
 /* If we add isomorphism, this will be handy */
 import ExecutionEnvironment from 'exenv';
 
-import {calendarData} from './SchedulerGlobals.jsx';
-
 /* Apollo */
 import ApolloClient from 'apollo-boost';
 import InMemoryCache, { ApolloProvider } from 'react-apollo';
@@ -54,12 +52,26 @@ class App extends Component {
 
 	updateClassesHandler(classes) {
 		console.log("HANDLER CALLBACK CALLED.");
-		this.setState({classes: classes});
+		console.log(classes);
+
+		this.setState(previousState => ({
+			classes: [...previousState.classes, classes]
+		}));
+
+		console.log("New State: ");
+		console.log(this.state.classes);
 	}
 
 	updateActivitiesHandler(activities) {
 		console.log("ACTIVITIES CALLBACK CALLED.");
-		this.setState({activities: activities});
+		console.log(activities);
+
+		this.setState(previousState => ({
+			activities: [...previousState.activities, activities]
+		}));
+
+		console.log("New State: ");
+		console.log(this.state.activities)
 	}
 
 	render() {
