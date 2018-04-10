@@ -2,7 +2,7 @@
   "name": "my-ut-scheduler",
   "version": "1.0.0",
   "main": "dist/js/main.js",
-  "license": "MIT",
+  "license": "Copyright © 2018 Brantleigh Bunting. All rights reserved.",
   "scripts": {
     "build": "webpack --progress --colors --hot --watch",
     "start:server": "npm-run-all --parallel server build",
