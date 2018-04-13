@@ -37,7 +37,7 @@ export default class PageHeader extends Component {
     const { classes } = this.props;
     return (
         <div>
-        <AppBar position="static" style={{backgroundColor: '#003e7e'}}>
+        <AppBar position="static" avatar={<img src="./download.png" />} style={{backgroundColor: '#003e7e', fontSize: '1.6rem'}}>
           <Toolbar>
             <Typography variant="title" color="inherit" style={{color: '#ffd200'}}>
               MyUT Scheduler
