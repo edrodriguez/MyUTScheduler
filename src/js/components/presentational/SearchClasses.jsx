@@ -71,7 +71,7 @@ const LeftPanel = (props) => {
               Add Classes:
             </Typography>
           </div>
-          <SemestersField />
+          <SemestersField {...props} />
           <div className={"scroll-gradient" + props.showGradient}>
           </div>
           <div className="search-column-scroll-area">
@@ -141,7 +141,7 @@ const LeftPanel = (props) => {
                           }
                         }>Schedule</Button>
                   </div>
-              }) :<div><p>No Classes Found.</p></div>
+              }) :<div><p>{props.searchClassesStateText}</p></div>
 
             }
           </div>
@@ -154,7 +154,7 @@ const LeftPanel = (props) => {
 
               console.log(StateData);
               props.get_subjects_by_tsc.refetch({ 
-                term: StateData.semester,
+                semester: StateData.semester,
                 department: StateData.department,
                 course: StateData.course, 
               }).then(obj => {
@@ -191,12 +191,12 @@ const LeftPanel = (props) => {
 const SearchClassesBase = compose(
   graphql(gql`
     query SearchClassesGetSubjectsByTermDeptCourse (
-      $term: String!, 
+      $semester: String!, 
       $department: String!, 
       $course: String!
     ){
       getSubjectsByTermDepartmentCourse(
-        term: $term,
+        semester: $semester,
         department: $department,
         course: $course) {
           id                
@@ -227,7 +227,7 @@ const SearchClassesBase = compose(
     name: 'get_subjects_by_tsc',
     options: {
       variables: {
-        term: StateData.semester,
+        semester: StateData.semester,
         department: StateData.department,
         course: StateData.course,
       }
@@ -236,7 +236,7 @@ const SearchClassesBase = compose(
   withState('expanded', 'handleExpansionPanel', null),
   withStateHandlers(
     { /* State */
-
+      searchClassesStateText: 'Please Search For A Class.',
       showGradient: ' hide-gradient',
       dialogOpen: false,
       classes: [],
@@ -258,6 +258,21 @@ const SearchClassesBase = compose(
       expanded_panel: null, /* For the expansion panels */
     },
     { /* State Handlers */
+      handleClearClasses: props => event => {
+        return {
+          classes: null
+        }
+      },
+      handleLoadingStateText: props => event => {
+        return {
+          searchClassesStateText: 'Loading...'
+        }
+      },
+      handleResetStateText: props => event => {
+        return {
+          searchClassesStateText: 'Please Search For A Class.'
+        }
+      },
       handleGradientHide: props => event => {
         return {
           showGradient: ' hide-gradient'

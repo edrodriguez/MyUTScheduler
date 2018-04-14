@@ -53,8 +53,24 @@ const Times = [
 
 const ScheduleComponent = (props) => {
 	const { timeSlot, activities } = props;
+
+	var holderClassName = "schedule-component-slot";
+	if (props.title == "Monday") {
+		if (props.am) {
+			holderClassName = "monday-component-slot-before-noon";
+		} else {
+			holderClassName = "monday-component-slot-after-noon";
+		}
+		if (timeSlot == 12) { /* Handle Noon Special */
+			holderClassName = "monday-component-slot-noon";
+		}
+		if (timeSlot == "Other") {
+			holderClassName = "monday-component-slot-other";
+		}
+	}
+
 	return (
-		<div className="schedule-component-slot">
+		<div className={holderClassName}>
 			{
 				activities.map((activity, index) => {
 					console.log("Got Activity: ");
@@ -81,8 +97,6 @@ const ScheduleComponent = (props) => {
 					console.log("X: ", x, "Index: ", timeSlot);
 					
 					if (timeSlot == x) {
-
-						
 						return course.days.map((day) => {
 							if (day == props.value) {
 								console.log("WE HIT IT LAD WEW");
@@ -110,20 +124,23 @@ const CalendarTimeColumn = (props) => {
 					{title}
 				</Typography>
 			</div>
-			{Times.map((val, idx) => {
-				return (
-					<Typography 
-						key={idx}
-						className="calendar-time-column-typography"
-					>
-						{val}
-					</Typography>
-				)
-			})}
+			
 
 		</div>
 	);
 };
+
+
+// {Times.map((val, idx) => {
+// 				return (
+// 					<Typography 
+// 						key={idx}
+// 						className="calendar-time-column-typography"
+// 					>
+// 						{val}
+// 					</Typography>
+// 				)
+// 			})}
 
 const CalendarColumn = (props) => {
 	return (
@@ -131,16 +148,24 @@ const CalendarColumn = (props) => {
 			<div className="calendar-column-header">
 				<Typography className="calendar-column-header-typography">{props.title}</Typography>
 			</div>
-			<ScheduleComponent timeSlot={0} {...props} />
-			<ScheduleComponent timeSlot={1} {...props} />
-			<ScheduleComponent timeSlot={2} {...props} />
-			<ScheduleComponent timeSlot={3} {...props} />
-			<ScheduleComponent timeSlot={4} {...props} />
-			<ScheduleComponent timeSlot={5} {...props} />
-			<ScheduleComponent timeSlot={6} {...props} />
-			<ScheduleComponent timeSlot={7} {...props} />
-			<ScheduleComponent timeSlot={8} {...props} />
-			<ScheduleComponent timeSlot={9} {...props} />
+
+			<ScheduleComponent timeSlot={8} am={true} {...props} />
+			<ScheduleComponent timeSlot={9} am={true} {...props} />
+			<ScheduleComponent timeSlot={10} am={true} {...props} />
+			<ScheduleComponent timeSlot={11} am={true} {...props} />
+
+			<ScheduleComponent timeSlot={12} am={false} {...props} />
+			<ScheduleComponent timeSlot={1} am={false} {...props} />
+			<ScheduleComponent timeSlot={2} am={false} {...props} />
+			<ScheduleComponent timeSlot={3} am={false} {...props} />
+			<ScheduleComponent timeSlot={4} am={false} {...props} />
+			<ScheduleComponent timeSlot={5} am={false} {...props} />
+			<ScheduleComponent timeSlot={6} am={false} {...props} />
+			<ScheduleComponent timeSlot={7} am={false} {...props} />
+			<ScheduleComponent timeSlot={8} am={false} {...props} />
+			<ScheduleComponent timeSlot={9} am={false} {...props} />
+
+			<ScheduleComponent timeSlot="Other" am={false} {...props} />
 		</div>
 	);
 }

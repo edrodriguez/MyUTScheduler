@@ -32,6 +32,8 @@ const selectStyle = {
 };
 
 const SemestersFieldBase = (props) => {
+  const { handleClearClasses, handleLoadingStateText, handleResetStateText } = props;
+
   return (
       <div className="section" style={{width: '280px', margin: '0px 10px 10px 10px'}}>
         <Select
@@ -50,16 +52,25 @@ const SemestersFieldBase = (props) => {
           name="selected-state"
           disabled={false}
           value={props.semesterValue}
-          onChange={(newValue) => {
+          onChange={async (newValue) => {
             StateData.semester = newValue;
-            const departments = props.get_departments.getDepartments; /* Load departments for the next series of boxes */
-            if (departments != null) { 
-              departments.map((val, idx) => {
-                Departments[idx] = {value: val, label: val};
-              });
-            }
-            props.handleGetDepartments(newValue, Departments, true, false);
-            props.updateValue({ semesterValue: newValue });
+
+
+            await props.get_departments.refetch({semester: newValue}).then(obj => {
+              console.log(obj.data.getDepartments);
+
+              const departments = obj.data.getDepartments; /* Load departments for the next series of boxes */
+              if (departments != null) { 
+                departments.map((val, idx) => {
+                  Departments[idx] = {value: val, label: val};
+                });
+              }
+              props.handleGetDepartments(newValue, Departments, true, false);
+              props.updateValue({ semesterValue: newValue });
+
+            });
+
+            
           }}
           rtl={props.rtl}
           searchable={props.searchable}
@@ -86,7 +97,7 @@ const SemestersFieldBase = (props) => {
                 StateData.department = newValue;
                 console.log("UPDATING VALUE: ", newValue);
                 props.updateValue({ departmentValue: newValue });
-                await props.get_courses.refetch({ subject: newValue }).then(obj => {
+                await props.get_courses.refetch({ department: newValue, semester: StateData.semester }).then(obj => {
                   console.log(obj.data.getCourses);
                   console.log("REFETCH COMPLETED");
                   const courses = obj.data.getCourses;
@@ -165,12 +176,12 @@ const SemestersFieldBase = (props) => {
 const SemestersField = compose(
   graphql(gql`
     query SearchClassesGetSubjectsByTermDeptCourse (
-      $term: String!, 
+      $semester: String!, 
       $department: String!, 
       $course: String!
     ){
       getSubjectsByTermDepartmentCourse(
-        term: $term,
+        semester: $semester,
         department: $department,
         course: $course) {
           id                
@@ -201,30 +212,37 @@ const SemestersField = compose(
     name: 'get_subjects_by_tsc',
     options: {
       variables: {
-        term: StateData.semester,
+        semester: StateData.semester,
         department: StateData.department,
         course: StateData.course,
       }
     }
   }),
    graphql(gql`
-    query SearchClassesGetCourses ($subject: String!) {
-      getCourses(subject: $subject) 
+    query SearchClassesGetCourses ($department: String!, $semester: String!) {
+      getCourses(department: $department, semester: $semester) 
     }
   `, { 
     name: 'get_courses',
     options: {
       variables: {
-        subject: StateData.department
+        department: StateData.department,
+        semester: StateData.semester
       }
     }
   }),
   graphql(gql`
-    query SearchClassesGetDepartments {
-      getDepartments
+    query SearchClassesGetDepartments ($semester: String!) {
+      getDepartments(semester: $semester)
     }
-  `, { name: 'get_departments' }
-  ),
+  `, { 
+    name: 'get_departments',
+    options: {
+      variables: {
+        semester: StateData.semester
+      }
+    }
+  }),
   withStateHandlers(
     {
       subjectsEnabled: false,

@@ -44,6 +44,7 @@ th:hover {
 
 /* --------- Begin Calendar Column --------- */
 .calendar-column {
+	counter-reset: pmschedule 0;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -52,6 +53,7 @@ th:hover {
 }
 
 .calendar-column-header {
+	counter-reset: schedule 7;
 	width: 100%;
 	height: 20px;
 	background-color: #003e7e; 
@@ -69,12 +71,60 @@ th:hover {
 
 
 /* --------- Begin Schedule Components --------- */
+.monday-component-slot-before-noon::before {
+	justify-content: center;
+	align-content: center;
+	text-align: right;
+	margin-left: -80px;
+	margin-top: auto;
+	margin-bottom: auto;
+	content: counter(schedule) + ":00 AM";
+	counter-increment: schedule;
+}
+.monday-component-slot-after-noon::before {
+	justify-content: center;
+	align-content: center;
+	text-align: right;
+	margin-left: -71px;
+	margin-top: auto;
+	margin-bottom: auto;
+	content: counter(pmschedule) + ":00 PM";
+	counter-increment: pmschedule;
+}
+
+.monday-component-slot-noon::before {
+	justify-content: center;
+	align-content: center;
+	text-align: right;
+	margin-left: -80px;
+	margin-top: auto;
+	margin-bottom: auto;
+	content: "12:00 PM";
+}
+
+.monday-component-slot-other::before {
+	justify-content: center;
+	align-content: center;
+	text-align: right;
+	margin-left: -52px;
+	margin-top: auto;
+	margin-bottom: auto;
+	content: "Other";
+}
+
+.monday-component-slot-other,
+.monday-component-slot-noon,
+.monday-component-slot-before-noon,
+.monday-component-slot-after-noon,
 .schedule-component-slot {
 	width: 100%;
 	min-width: 200px;
 	max-width: 300px;
-	height: 100%;
+	min-height: 40px;
+	max-height: 300px;
+	// height: 100%;
 	justify-content: center;
+	// overflow: scroll;
 	align-content: center;
 	background-color: rgba(0.3, 0.3, 0.3, 0.02);
 	margin: 5px 5px 5px 5px;
@@ -224,9 +274,10 @@ th:hover {
 	border-color: transparent;
 	border-radius: 13px;
 	background-color: rgba(0, 62, 126, 0.4);
-	width: 200px;
-	margin: auto;
-	height: 100px;
+	width: 100%;
+	height: auto;
+	min-height: 100px;
+	max-height: 200px;
 	margin-top: 10px;
 }
 
