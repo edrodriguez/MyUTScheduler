@@ -7,6 +7,8 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const extractLESS = new ExtractTextPlugin('./src/less/app.less');
 
+const GoogleFontsPlugin = require("google-fonts-webpack-plugin");
+
 var nodeModules = {};
 fs.readdirSync('node_modules')
   .filter(function(x) {
@@ -83,11 +85,16 @@ module.exports = [
           }
         ],
         loaders: [
-          { 
-            test: /\.(png|woff|woff2|eot|ttf|svg)$/, 
-            exclude: /node_modules/,
-            loader: 'url-loader?limit=100000' 
-          },
+          // {
+          //   test: /\.(png|jp(e*)g|svg|gif)$/,  
+          //   use: [{
+          //       loader: 'file-loader',
+          //       options: { 
+          //           limit: 8000,
+          //           name: 'images/[hash]-[name].[ext]'
+          //       } 
+          //   }]
+          // },
           {
             test: /\.less$/,
             loader: ExtractTextPlugin.extract('style-loader', 'css!less?indentedSyntax=true&sourceMap=true')
@@ -95,19 +102,6 @@ module.exports = [
           {
             test: /\.css$/,
             loader: ExtractTextPlugin.extract('style-loader', 'css!less?indentedSyntax=true&sourceMap=true')
-          },
-          // {
-          //   test: /\.less$/,
-          //   exclude: /node_modules/,
-          //   loader: ExtractTextPlugin.extract({ 
-          //     loader:[ 'css', 'less' ], 
-          //     fallbackLoader: 'style-loader' 
-          //   })
-          // },
-          {
-            test:    /\.(png|jpg|ttf|eot)$/,
-            exclude: /node_modules/,
-            loader:  "url-loader?limit=10000"
           }
         ]
       },
@@ -180,36 +174,20 @@ module.exports = [
             }, {
                 loader: "less-loader" // compiles Less to CSS
             }]
-          }
-        ],
-        loaders: [
+          },
+          {
+            test: /\.(jpe?g|png|gif|svg)$/i,
+            loaders: [
+              'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+              'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
+            ]
+          },
           { 
-            test: /\.(png|woff|woff2|eot|ttf|svg)$/, 
+            test: /\.(woff|woff2|eot|ttf|svg)$/, 
             exclude: /node_modules/,
             loader: 'url-loader?limit=100000' 
           },
-          {
-            test: /\.less$/,
-            loader: ExtractTextPlugin.extract('style-loader', 'css!less?indentedSyntax=true&sourceMap=true')
-          },
-          {
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract('style-loader', 'css!less?indentedSyntax=true&sourceMap=true')
-          },
-          // {
-          //   test: /\.less$/,
-          //   exclude: /node_modules/,
-          //   loader: ExtractTextPlugin.extract({ 
-          //     loader:[ 'css', 'less' ], 
-          //     fallbackLoader: 'style-loader' 
-          //   })
-          // },
-          {
-            test:    /\.(png|jpg|ttf|eot)$/,
-            exclude: /node_modules/,
-            loader:  "url-loader?limit=10000"
-          }
-        ]
+        ],
       },
 
       plugins: [
@@ -217,7 +195,20 @@ module.exports = [
           template: "./src/index.html",
           filename: "./index.html"
         }),
-        extractLESS
+        new CopyWebpackPlugin(
+          [{ from: './src/images/', to: 'public/images/' }]
+        ),
+        extractLESS,
+        new GoogleFontsPlugin({
+          fonts: [
+            { family: "Source Sans Pro" },
+            { family: "Roboto", variants: [ "400", "700italic" ] },
+            { family: "Roboto Mono"},
+            { family: 'Raleway', variants: [ "400"] },
+            { family: 'Poppins', variants: [ "400", "700"]}
+          ]
+          /* ...options */
+        })
       ]
     }
 ];

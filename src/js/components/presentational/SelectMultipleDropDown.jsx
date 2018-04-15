@@ -21,7 +21,7 @@ import { gql } from 'apollo-boost';
 import { Query, graphql } from 'react-apollo';
 
 export const StateData = {
-  semester: '',
+  semester: 'Summer 2018',
   department: '',
   course: ''
 };
@@ -32,8 +32,6 @@ const selectStyle = {
 };
 
 const SemestersFieldBase = (props) => {
-  const { handleClearClasses, handleLoadingStateText, handleResetStateText } = props;
-
   return (
       <div className="section" style={{width: '280px', margin: '0px 10px 10px 10px'}}>
         <Select
@@ -52,13 +50,27 @@ const SemestersFieldBase = (props) => {
           name="selected-state"
           disabled={false}
           value={props.semesterValue}
+          onOpen={(e) => {
+            props.handleClearClasses();
+            props.handleLoadingStateText();
+          }}
+          onClose={(e) => {
+            props.handleDepartmentStateText();
+          }}
           onChange={async (newValue) => {
+            console.log("On Change.");
             StateData.semester = newValue;
+            props.updateValue({ semesterValue: newValue });
+            
+            {/*props.handleLoadingStateText();*/}
 
-
-            await props.get_departments.refetch({semester: newValue}).then(obj => {
+            await props.get_departments.refetch({
+              semester: newValue
+            }).then(obj => {
+              console.log(obj);
               console.log(obj.data.getDepartments);
 
+              console.log(StateData);
               const departments = obj.data.getDepartments; /* Load departments for the next series of boxes */
               if (departments != null) { 
                 departments.map((val, idx) => {
@@ -66,11 +78,9 @@ const SemestersFieldBase = (props) => {
                 });
               }
               props.handleGetDepartments(newValue, Departments, true, false);
-              props.updateValue({ semesterValue: newValue });
-
-            });
-
-            
+            }).catch(err => {
+              console.error("Promise Rejected, Reason: ", err);
+            });            
           }}
           rtl={props.rtl}
           searchable={props.searchable}
@@ -93,11 +103,25 @@ const SemestersFieldBase = (props) => {
               name="selected-state"
               disabled={false}
               value={props.departmentValue}
+              onOpen={(e) => {
+                props.handleClearClasses();
+                props.handleLoadingStateText();
+              }}
               onChange={async (newValue) => {
+                console.log("On Change.");
                 StateData.department = newValue;
+
+                // props.handleClearClasses();
+                // props.handleLoadingStateText();
+
                 console.log("UPDATING VALUE: ", newValue);
                 props.updateValue({ departmentValue: newValue });
-                await props.get_courses.refetch({ department: newValue, semester: StateData.semester }).then(obj => {
+
+                console.log(StateData);
+                await props.get_courses.refetch({ 
+                  semester: StateData.semester,
+                  department: StateData.department
+                }).then(obj => {
                   console.log(obj.data.getCourses);
                   console.log("REFETCH COMPLETED");
                   const courses = obj.data.getCourses;
@@ -106,7 +130,11 @@ const SemestersFieldBase = (props) => {
                   });
                   props.handleGetCourses(newValue, Courses, true, true);
                   console.log(Courses);
+                  props.handleCourseStateText();
+                }).catch(err => {
+                  console.error("Promise Rejected, Reason: ", err);
                 });
+
               }}
               rtl={props.rtl}
               searchable={props.searchable}
@@ -133,11 +161,30 @@ const SemestersFieldBase = (props) => {
                 name="selected-state"
                 disabled={false}
                 value={props.coursesValue}
-                onChange={(newValue) => {
+                onOpen={(e) => {
+                  props.handleClearClasses();
+                  props.handleLoadingStateText();
+                }}
+                onChange={async (newValue) => {
                   StateData.course = newValue;
                   props.updateValue({coursesValue: newValue});
 
+                  // props.handleClearClasses();
+                  // props.handleLoadingStateText();
+
                   console.log(StateData);
+                  await props.get_subjects_by_tsc.refetch({ 
+                    semester: StateData.semester,
+                    department: StateData.department,
+                    course: newValue, 
+                  }).then(obj => {
+                    const all = obj.data.getSubjectsByTermDepartmentCourse;
+                    console.log("MOST FILTERED: ", all);
+                    props.handleClassesUpdate(null, all);
+                  }).catch(err => {
+                    console.error("Promise Rejected, Reason: ", err);
+                  });
+
                 }}
                 rtl={props.rtl}
                 searchable={props.searchable}

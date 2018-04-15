@@ -22,6 +22,14 @@ const SearchResultLabel = (props) => {
   );
 };
 
+export const PlaceholderCounts = {
+  "M": false, "T": false, "W": false, "R": false, "F": false
+};
+
+export const Placeholders = {
+  "M": 0, "T": 0, "W": 0, "R": 0, "F": 0
+};
+
 /*
 title: this.state.selectValue,
 description: this.state.description,
@@ -56,6 +64,19 @@ export class ExtracurricularCard extends Component {
 
       </div>
     );
+  }
+}
+
+
+
+
+export class PlaceholderCard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return ( <div className="schedule-card-placeholder" key={uuid()}></div>);
   }
 }
 

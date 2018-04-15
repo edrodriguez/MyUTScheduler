@@ -146,7 +146,15 @@ const LeftPanel = (props) => {
             }
           </div>
 
-          <Button 
+          
+          <AlertDialog {...props} />
+        </div>
+    </div>
+  );
+};
+
+/*
+<Button 
             variant="raised"
             size="small" 
             onClick={(e) => {
@@ -182,15 +190,12 @@ const LeftPanel = (props) => {
           >
           Search
           </Button>
-          <AlertDialog {...props} />
-        </div>
-    </div>
-  );
-};
+
+*/
 
 const SearchClassesBase = compose(
   graphql(gql`
-    query SearchClassesGetSubjectsByTermDeptCourse (
+    query SearchClassesGetSubjectsSearchButtonByTermDeptCourse (
       $semester: String!, 
       $department: String!, 
       $course: String!
@@ -260,7 +265,7 @@ const SearchClassesBase = compose(
     { /* State Handlers */
       handleClearClasses: props => event => {
         return {
-          classes: null
+          classes: []
         }
       },
       handleLoadingStateText: props => event => {
@@ -268,9 +273,19 @@ const SearchClassesBase = compose(
           searchClassesStateText: 'Loading...'
         }
       },
+      handleDepartmentStateText: props => event => {
+        return {
+          searchClassesStateText: 'Please Select A Department.'
+        }
+      },
+      handleCourseStateText: props => event => {
+        return {
+          searchClassesStateText: 'Please Select A Course.'
+        }
+      },
       handleResetStateText: props => event => {
         return {
-          searchClassesStateText: 'Please Search For A Class.'
+          searchClassesStateText: 'Please Select A Semester.'
         }
       },
       handleGradientHide: props => event => {

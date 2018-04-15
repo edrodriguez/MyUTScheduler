@@ -1,3 +1,6 @@
+@main-font-face: 'Source Sans Pro';
+@header-font-size: 1.0em;
+
 @th-color: #428bca;
 @th-color-hover: darken(@th-color, 10%);
 
@@ -13,14 +16,17 @@ th:hover {
 .calendar-time-column {
 	display: flex;
 	flex-direction: column;
-	height: 800px;
+	height: 900px;
 }
 
 .calendar-time-header {
-	width: 100px;
+	width: 80px;
 	height: 20px;
 	background-color: #003e7e;
-	margin: 10px 10px 10px 10px;
+	margin: 10px 0px 10px 10px;
+	font-family: @main-font-face;
+    font-style: normal;
+    font-size: 10pt;
 }
 
 .calendar-time-header-typography {
@@ -28,6 +34,9 @@ th:hover {
 	display: flex; 
 	justify-content: center;
 	color: #ffd200;
+	font-family: @main-font-face;
+    font-style: normal;
+    font-size: @header-font-size;
 }
 
 .calendar-time-column-typography {
@@ -39,6 +48,9 @@ th:hover {
 	margin-right: 10px;
 	justify-content: right;
 	color: #BBB;
+	font-family: @main-font-face;
+    font-style: normal;
+    font-size: @header-font-size;
 }
 /* --------- End Time Column --------- */
 
@@ -54,10 +66,13 @@ th:hover {
 
 .calendar-column-header {
 	counter-reset: schedule 7;
-	width: 100%;
+	width: 250px;
 	height: 20px;
 	background-color: #003e7e; 
-	margin: 10px 5px 10px 5px;
+	margin: 10px 0px 10px 5px;
+	font-family: @main-font-face;
+    font-style: normal;
+    font-size: @header-font-size;
 }
 
 .calendar-column-header-typography {
@@ -65,69 +80,125 @@ th:hover {
 	display: flex;
 	justify-content: center;
 	color: #ffd200;
+	font-family: @main-font-face;
+    font-style: normal;
+    font-size: @header-font-size;
 }
 
 /* --------- End Calendar Column --------- */
-
 
 /* --------- Begin Schedule Components --------- */
 .monday-component-slot-before-noon::before {
 	justify-content: center;
 	align-content: center;
 	text-align: right;
-	margin-left: -80px;
+	font-family: @main-font-face;
+	font-size: 12pt;
+	display: inline-block;
+	width: 80px;
+	// font-style: italic;
+	// font-weight: 700;
+	color: #AAA;
+	margin-left: -350px;
 	margin-top: auto;
 	margin-bottom: auto;
 	content: counter(schedule) + ":00 AM";
 	counter-increment: schedule;
+	position: absolute;
+	border-bottom: 2px solid #CCC;
 }
 .monday-component-slot-after-noon::before {
 	justify-content: center;
 	align-content: center;
 	text-align: right;
-	margin-left: -71px;
+	font-family: @main-font-face;
+	font-size: 12pt;
+	display: inline-block;
+	width: 80px;
+	// font-style: italic;
+	// font-weight: 700;
+	color: #AAA;
+	margin-left: -350px;
 	margin-top: auto;
 	margin-bottom: auto;
 	content: counter(pmschedule) + ":00 PM";
 	counter-increment: pmschedule;
+	position: absolute;
+	border-bottom: 2px solid #CCC;
 }
 
 .monday-component-slot-noon::before {
 	justify-content: center;
 	align-content: center;
 	text-align: right;
-	margin-left: -80px;
+	font-family: @main-font-face;
+	font-size: 12pt;
+	display: inline-block;
+	width: 80px;
+	// font-style: italic;
+	// font-weight: 700;
+	color: #AAA;
+	margin-left: -350px;
 	margin-top: auto;
 	margin-bottom: auto;
 	content: "12:00 PM";
+	position: absolute;
+	border-bottom: 2px solid #CCC;
 }
 
 .monday-component-slot-other::before {
 	justify-content: center;
 	align-content: center;
 	text-align: right;
-	margin-left: -52px;
+	font-family: @main-font-face;
+	font-size: 12pt;
+	display: inline-block;
+	width: 80px;
+	// font-style: italic;
+	// font-weight: 700;
+	color: #AAA;
+	margin-left: -350px;
 	margin-top: auto;
 	margin-bottom: auto;
 	content: "Other";
+	position: absolute;
+	border-bottom: 2px solid #CCC;
 }
 
 .monday-component-slot-other,
 .monday-component-slot-noon,
 .monday-component-slot-before-noon,
-.monday-component-slot-after-noon,
-.schedule-component-slot {
-	width: 100%;
-	min-width: 200px;
-	max-width: 300px;
-	min-height: 40px;
-	max-height: 300px;
+.monday-component-slot-after-noon {
+	width: 250px;
+	min-height: 20px;
+	max-height: 230px;
 	// height: 100%;
 	justify-content: center;
 	// overflow: scroll;
 	align-content: center;
 	background-color: rgba(0.3, 0.3, 0.3, 0.02);
-	margin: 5px 5px 5px 5px;
+	margin: 5px 0px 5px 5px;
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: auto;
+	display: flex;
+	flex-direction: row;
+}
+.schedule-component-slot {
+	width: 250px;
+	min-height: 20px;
+	max-height: 230px;
+	// height: 100%;
+	justify-content: center;
+	overflow: hidden;
+	align-content: center;
+	background-color: rgba(0.3, 0.3, 0.3, 0.02);
+	margin: 5px 0px 5px 5px;
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: auto;
+	display: flex;
+	flex-direction: row;
 }
 
 /* --------- End Schedule Components --------- */
@@ -135,14 +206,14 @@ th:hover {
 /* --------- Begin Search Column --------- */
 .search-column {
 	position: relative;
-	height: 900px;
+	height: 500px;
 	border-style: solid;
 	border-width: 1px;
 	border-color: transparent;
 	border-radius: 13px;
 	background-color: rgba(0, 62, 126, 0.1);
 	width: 300;
-	margin: 10px 0px 50px 10px;
+	margin: 10px 0px 0px 10px;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
@@ -167,7 +238,7 @@ th:hover {
 	border-radius: 13px;
 	background-color: rgba(0, 62, 126, 0.4);
 	width: 280px;
-	height: 160px;
+	height: 200px;
 	margin: 5px 10px 5px 10px;
 }
 /* --------- End Search Column --------- */
@@ -231,9 +302,9 @@ th:hover {
 .scroll-gradient {
 	position: absolute;
 	pointer-events: none;
-	top: 683px;
+	top: 450px;
 	width: 280px;
-	height: 160px;
+	height: 50px;
 	margin-left: 10px;
 	margin-top: auto;
 	background: linear-gradient(top, rgba(0, 0, 0, 0.5), transparent);
@@ -275,11 +346,17 @@ th:hover {
 	border-radius: 13px;
 	background-color: rgba(0, 62, 126, 0.4);
 	width: 100%;
-	height: auto;
+	height: 130px;
 	min-height: 100px;
 	max-height: 200px;
 	margin-top: 10px;
 }
+.schedule-card-placeholder {
+	height: 110px;
+	background-color: transparent;
+	background: transparent;
+}
+
 
 /* --------- End Schedule Card --------- */
 

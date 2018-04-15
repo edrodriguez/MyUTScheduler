@@ -22,6 +22,8 @@ import List from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 
+const UTShield = require('../../../images/raw_bmp_extract.gif');
+
 export default class PageHeader extends Component {
   state = {
       left: false,
@@ -37,9 +39,17 @@ export default class PageHeader extends Component {
     const { classes } = this.props;
     return (
         <div>
-        <AppBar position="static" avatar={<img src="./download.png" />} style={{backgroundColor: '#003e7e', fontSize: '1.6rem'}}>
+        <AppBar position="static" style={{
+          backgroundColor: '#003e7e'
+        }}>
           <Toolbar>
-            <Typography variant="title" color="inherit" style={{color: '#ffd200'}}>
+            <img src={UTShield} width="65px" height="50px" />
+            <Typography variant="title" color="inherit" style={{
+              color: '#ffd200',
+              fontSize: '1.6em',
+              fontFamily: 'Roboto',
+              fontStyle: 'normal',
+            }}>
               MyUT Scheduler
             </Typography>
           </Toolbar>

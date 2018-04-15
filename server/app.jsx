@@ -75,21 +75,6 @@ const connection = mysql.createConnection({
 */
 
 
-/* V1 */
-// const connection = mysql.createConnection({
-//     host: "myutschedulerdbinstance.cztvf7ayunfs.us-east-2.rds.amazonaws.com",
-//     user: "seniordesign",
-//     password: "myutscheduler",
-//     database: "myutschedulerdb"
-// });
-
-
-
-
-
-
-
-
 /* ---------- Begin GraphQL Schema ---------- */
 
 /* 
@@ -345,114 +330,10 @@ const schemaV2 = new GraphQLSchema({
     })
 });
 
-// const schemaV1 = new GraphQLSchema({
-//     query: new GraphQLObjectType({ /* GraphQL Queries Go Here */
-//         name: 'Query',
-//         fields: {
-//             getSubjectsByTermDepartmentCourse: {
-//                 type: new GraphQLList(courseOfferedRecordTypeV1),
-//                 args: { 
-//                     term: { type: GraphQLString },
-//                     department: { type: GraphQLString },
-//                     course: { type: GraphQLString }
-//                 },
-//                 resolve(parent, { term, department, course }) {
-//                     return new Promise((resolve, reject) => {
-//                         connection.query(
-//                             "SELECT * FROM CoursesOffered WHERE Term = ? AND Subject = ? AND Course = ?",
-//                             [term, department, course],
-//                             (err, result, fields) => {
-//                                 if (err) {
-//                                     console.log(error);
-//                                     reject();
-//                                 }
 
-//                                 console.log(result);
-//                                 resolve(result);
-//                             }
-//                         );
-//                     });
-//                 }
-//             },
-//             getSubjectsByTerm: {
-//                 type: new GraphQLList(courseOfferedRecordTypeV1),
-//                 args: { term: { type: GraphQLString } },
-//                 resolve(parent, { term }) {
-//                     return new Promise((resolve, reject) => {
-//                         connection.query(
-//                             'SELECT * FROM CoursesOffered WHERE Term=?', 
-//                             [term], 
-//                             (error, result, fields) => {
-//                                 if (error) {
-//                                     console.log(error);
-//                                     reject();
-//                                 }
-//                                 resolve(result);
-//                             }
-//                         );
-//                     });
-//                 }
-//             },
-//             getDepartments: {
-//                 type: new GraphQLList(GraphQLString),
-//                 resolve(parent) {
-//                     return new Promise((resolve, reject) => {
-//                         connection.query(
-//                             "SELECT DISTINCT Subject FROM CoursesOffered",
-//                             (error, result, fields) => {
-//                                 if (error) { 
-//                                     console.log(error);
-//                                     reject();
-//                                 }
-
-//                                 var final_res = [];
-//                                 result.map((val, idx) => {
-//                                     final_res[idx] = val.Subject;
-//                                 })
-//                                 console.log(final_res);
-//                                 resolve(final_res);
-//                             }
-//                         );
-//                     });
-//                 }
-//             },
-
-//             getCourses: { 
-//                 type: new GraphQLList(GraphQLString),
-//                 args: { subject: { type: GraphQLString } },
-//                 resolve(parent, { subject }) {
-//                     return new Promise((resolve, reject) => {
-//                         connection.query(
-//                             'SELECT DISTINCT Course FROM CoursesOffered WHERE Subject = ?',
-//                             [subject],
-//                             (error, result, fields) => {
-//                                 if (error) {
-//                                     console.log(error);
-//                                     reject();
-//                                 }
-
-//                                 var final_res = [];
-//                                 result.map((val, idx) => {
-//                                     final_res[idx] = val.Course;
-//                                 });
-//                                 console.log(final_res);
-//                                 resolve(final_res);
-//                             }
-//                         );
-//                     });
-//                 }
-//             }
-
-//         }
-//     })
-// });
 app.use(cors()); /* Cross Origin Access */
 const server = new Server(app);
-// app.use('/graphqlV1', graphqlHTTP(req => ({  Tell Express to use graphql schema above 
-//     schema: schemaV1,
-//     pretty: true,
-//     graphiql: true
-// })));
+
 app.use('/graphqlV2', graphqlHTTP(req => ({ /* Tell Express to use graphql schema above */
     schema: schemaV2,
     pretty: true,

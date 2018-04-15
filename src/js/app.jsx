@@ -54,9 +54,28 @@ class App extends Component {
 		console.log("HANDLER CALLBACK CALLED.");
 		console.log(classes);
 
-		this.setState(previousState => ({
-			classes: [...previousState.classes, classes]
-		}));
+		var canRegisterThisClass = true;
+
+		for (const course of this.state.classes) { 
+			/* If we find the class we are trying to register
+			 * then we need to display a popup alerting the user
+			 */
+			if (course.course == classes.course) { canRegisterThisClass = false; }
+			if (course.crn == classes.crn) { canRegisterThisClass = false; }
+			if (course.room == classes.room) { canRegisterThisClass = false; }
+			if (course.title == classes.title) { canRegisterThisClass = false; }
+		}
+
+		if (!canRegisterThisClass) {
+			console.log("COURSE WAS EXISTENT ALREADY");
+		}
+		
+		if (canRegisterThisClass) {
+			this.setState(previousState => ({
+				classes: [...previousState.classes, classes]
+			}));
+		}
+		
 
 		console.log("New State: ");
 		console.log(this.state.classes);
@@ -85,9 +104,12 @@ class App extends Component {
 					alignContent: 'top',
               		alignItems: 'left',
 			}}>
+				<div style={{display: 'flex', flexDirection: 'column'}}>
 				<SearchClasses 
 					updateClassesHandler={this.updateClassesHandler}
 				/>
+				<div className="search-column"></div>
+				</div>
 				<div style={{display: 'flex', flexDirection: 'column'}}>
 					<Extracurricular 
 						updateActivitiesHandler={this.updateActivitiesHandler}
