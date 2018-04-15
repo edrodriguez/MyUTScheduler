@@ -11,6 +11,8 @@ import Select from 'react-select';
 
 import 'react-select/dist/react-select.css';
 
+import { AlertDialog } from '../dialogs/Dialogs.jsx';
+
 const styles = theme => ({
 	container: {
 	    display: 'flex',
@@ -105,8 +107,31 @@ const AvailableTimes = [
 	{ value: 1500, label: "3:00 PM" }, 
 	{ value: 1515, label: "3:15 PM" }, 
 	{ value: 1530, label: "3:30 PM" }, 
-	{ value: 1545, label: "3:45 PM" }
+	{ value: 1545, label: "3:45 PM" },
+	{ value: 1600, label: "4:00 PM" },
+	{ value: 1600, label: "4:15 PM" }, 
+	{ value: 1600, label: "4:30 PM" }, 
+	{ value: 1600, label: "4:45 PM" },  
+	{ value: 1700, label: "5:00 PM" },
+	{ value: 1700, label: "5:15 PM" },
+	{ value: 1700, label: "5:30 PM" },
+	{ value: 1700, label: "5:45 PM" }, 
+	{ value: 1800, label: "6:00 PM" },
+	{ value: 1800, label: "6:15 PM" }, 
+	{ value: 1800, label: "6:30 PM" }, 
+	{ value: 1800, label: "6:45 PM" },  
+	{ value: 1900, label: "7:00 PM" },
+	{ value: 1900, label: "7:15 PM" },
+	{ value: 1900, label: "7:30 PM" },
+	{ value: 1900, label: "7:45 PM" }, 
+	{ value: 2000, label: "8:00 PM" }, 
+	{ value: 2000, label: "8:15 PM" }, 
+	{ value: 2000, label: "8:30 PM" }, 
+	{ value: 2000, label: "8:45 PM" }, 
+	{ value: 2100, label: "9:00 PM" }, 
 ];
+
+var SecondaryAvailableTimes = []; /* To be populated with filtered above values */
 
 const Activities = [
 	{ value: "Workout", label: "Workout"},
@@ -156,9 +181,25 @@ class Extracurricular extends Component {
 			description: '',
 			startTime: '',
 			endTime: '',
-			day: ''
+			day: '',
+			dialogOpen: false
 		};
+
+		this.handleOpen = this.handleOpen.bind(this);
+		this.handleClose = this.handleClose.bind(this);
 	}
+
+
+	handleOpen() {
+        console.log("Handle Open Dialog.");
+        this.setState({ dialogOpen: true });
+      
+    }
+    handleClose() {
+        console.log("Handle Close Dialog.");
+        this.setState({ dialogOpen: false })
+    }
+
 
 	render() {
 		const { classes, updateActivitiesHandler } = this.props;
@@ -189,10 +230,11 @@ class Extracurricular extends Component {
 					     
 				        </div>
 				    
-				    <div style={{width: '360px'}}>
+				    <div>
 				        <TextField
 				        	style={{margin: "10px 10px 10px 10px"}}
 					        defaultValue=""
+					        value={this.state.description}
 					        label="Description"
 					        id="bootstrap-input"
 					        onChange={
@@ -237,6 +279,15 @@ class Extracurricular extends Component {
 					        		(newValue) => {
 						          		console.log("Updated State: {startTime: " + newValue + "}");
 						          		this.setState({startTime: newValue});
+
+						          		SecondaryAvailableTimes = [];
+
+						          		for (const time of AvailableTimes) {
+						          			if (time.value >= newValue) {
+						          				SecondaryAvailableTimes.push(time);
+						          			}
+						          		}
+
 					          		}
 						        }
 						  />
@@ -244,7 +295,7 @@ class Extracurricular extends Component {
 					<div style={{width: '250px', margin: '45px 5px 0px 5px'}}>
 						  <ExtracurricularSelect 
 					        	selectValue={this.state.endTime} 
-					        	options={AvailableTimes}
+					        	options={SecondaryAvailableTimes}
 					        	placeholder="End Time"
 					        	onValueChange={
 					        		(newValue) => {
@@ -281,6 +332,16 @@ class Extracurricular extends Component {
 							    			this.state.day +
 							    			" }"
 							    		);
+
+							    		if (this.state.selectValue == '' ||
+							    			this.state.description == '' ||
+							    			this.state.startTime == '' ||
+							    			this.state.endTime == '' ||
+							    			this.state.day == '') {
+							    			this.handleOpen();
+							    			return;
+							    		}
+
 							    		updateActivitiesHandler({
 							    			title: this.state.selectValue,
 							    			description: this.state.description,
@@ -288,6 +349,14 @@ class Extracurricular extends Component {
 							    			endTime: this.state.endTime,
 							    			day: this.state.day
 							    		});
+
+							    		this.setState({
+						    				selectValue: '',
+											description: '',
+											startTime: '',
+											endTime: '',
+											day: ''
+						    			});
 							    	}
 							    }
 							>
@@ -296,6 +365,7 @@ class Extracurricular extends Component {
 					    </div>
 			        </div>
 				</div>
+				<AlertDialog dialogOpen={this.state.dialogOpen} handleClose={this.handleClose} {...this.props} />
 			</div>
 		);
 	}

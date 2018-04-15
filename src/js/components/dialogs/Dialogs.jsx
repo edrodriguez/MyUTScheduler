@@ -22,10 +22,10 @@ export const AlertDialog = (props) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{"Oops!"}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">Oops!</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Please select Semester, Department, and Course to search for the classes you need.
+          Please fill out all of the values to schedule and activity.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -36,31 +36,6 @@ export const AlertDialog = (props) => {
     </Dialog>
   );
 };
-
-
-/*
-id:                 
-term:               
-subject:            
-course:             
-section:            
-linkId:             
-crn:                
-title:              
-minCredits:         
-maxCredits:         
-instructorFirstName:
-instructorLastName: 
-actualEnrollment:   
-maximumEnrollment:  
-seatsAvailable:     
-meetingTimeCount:   
-scheduleType:       
-building:           
-room:               
-beginTime:          
-endTime:
-*/
 
 
 export const DetailsDialog = (props) => {
@@ -93,7 +68,7 @@ export const DetailsDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleDetailsClose} color="primary" autoFocus>
-          Ok
+          Close
         </Button>
       </DialogActions>
     </Dialog>
@@ -102,29 +77,38 @@ export const DetailsDialog = (props) => {
 
 
 
+export const ExtracurricularDialog = (props) => {
 
+  const { 
+    detailsOpen, 
+    handleDetailsClose, 
+    activityTitle, 
+    activityDescription,
+    when
+  } = props;
 
+  return (
+    <Dialog
+      open={detailsOpen}
+      onClose={handleDetailsClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{activityTitle}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          {activityDescription}
+        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">
+          Time: {when}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleDetailsClose} color="primary" autoFocus>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+};

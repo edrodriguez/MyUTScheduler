@@ -145,53 +145,11 @@ const LeftPanel = (props) => {
 
             }
           </div>
-
-          
           <AlertDialog {...props} />
         </div>
     </div>
   );
 };
-
-/*
-<Button 
-            variant="raised"
-            size="small" 
-            onClick={(e) => {
-              console.log(props);
-
-              console.log(StateData);
-              props.get_subjects_by_tsc.refetch({ 
-                semester: StateData.semester,
-                department: StateData.department,
-                course: StateData.course, 
-              }).then(obj => {
-                const all = obj.data.getSubjectsByTermDepartmentCourse;
-                console.log("MOST FILTERED: ", all);
-                props.handleClassesUpdate(e, all);
-              });
-
-              if (StateData.semester === '' || 
-                  StateData.department === '' ||
-                  StateData.course === '') {
-                props.handleOpen(e);
-              } else {
-                props.handleClose(e);
-              }
-            }}
-            style={{
-              backgroundColor: '#0F3e7e', 
-              margin: '10px 10px 10px 10px',
-              color: '#ffd200',
-              display: 'flex', 
-              alignItems: 'center',
-              marginTop: 'auto',
-            }}
-          >
-          Search
-          </Button>
-
-*/
 
 const SearchClassesBase = compose(
   graphql(gql`
@@ -241,7 +199,7 @@ const SearchClassesBase = compose(
   withState('expanded', 'handleExpansionPanel', null),
   withStateHandlers(
     { /* State */
-      searchClassesStateText: 'Please Search For A Class.',
+      searchClassesStateText: 'Please Select A Semester.',
       showGradient: ' hide-gradient',
       dialogOpen: false,
       classes: [],

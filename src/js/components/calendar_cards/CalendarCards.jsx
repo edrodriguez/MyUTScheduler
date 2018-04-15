@@ -7,7 +7,7 @@ import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 
 import { parseTime } from '../Lib.jsx';
-import { DetailsDialog } from '../dialogs/Dialogs.jsx';
+import { DetailsDialog, ExtracurricularDialog } from '../dialogs/Dialogs.jsx';
 
 const SearchResultLabel = (props) => {
   return (
@@ -61,6 +61,30 @@ export class ExtracurricularCard extends Component {
        
           <SearchResultLabel title="Activity: " body={extracurricular.title} />
           <SearchResultLabel title="When: " body={parseTime(extracurricular.startTime) + " - " + parseTime(extracurricular.endTime)} />
+          <Button 
+          type="Raised"
+          size="small" 
+          style ={{
+            marginTop: 'auto',
+            marginLeft: '5px',
+            marginRight: '5px',
+            marginBottom: '5px',
+            float: 'right',
+            color: '#FAFA0A',
+          }} 
+          onClick={(e) => {
+            this.handleDetailsOpen();
+          }}
+         >Details</Button>
+
+         <ExtracurricularDialog 
+            detailsOpen={this.state.detailsOpen}
+            handleDetailsClose={this.handleDetailsClose}
+            activityTitle={extracurricular.title}
+            activityDescription={extracurricular.description}
+            when={parseTime(extracurricular.startTime) + " - " + parseTime(extracurricular.endTime)}
+            {...this.props} 
+         />
 
       </div>
     );
@@ -98,6 +122,10 @@ export class ScheduleCard extends Component {
    this.setState({detailsOpen: false}); 
   }
 
+  handleRemoveClass(course) {
+    console.log("Will Remove Class: ", course);
+  }
+
   componentDidMount() {
     this.mounted = true;
   }
@@ -118,13 +146,17 @@ export class ScheduleCard extends Component {
           title="When: " 
           body={parseTime(course.start) + " - " + parseTime(course.end)} 
         />
+
         <Button 
           type="Raised"
           size="small" 
           style ={{
             marginTop: 'auto',
+            marginLeft: '5px',
+            marginRight: '5px',
+            marginBottom: '5px',
             float: 'right',
-            color: '#FAFA0A',
+            color: '#ffd200',
           }} 
           onClick={(e) => {
             this.handleDetailsOpen();

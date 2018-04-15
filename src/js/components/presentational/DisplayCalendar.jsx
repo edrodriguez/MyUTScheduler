@@ -171,51 +171,68 @@ class ScheduleComponent extends Component {
 
 		// MAKE PLACEHOLDERS COLLAPSE WIDTH WISE AND CLASS CARDS GROW COLUMN WISE
 
-		return (<div className={holderClassName}>
-			{
-				activities.map((activity, index) => {
-					// console.log("Got Activity: ");
-					// console.log(activity);
-					const i = substring(activity.startTime + "") + "";
-					// console.log(i);
-					let x = IndexToTime[i];
-					// console.log("X: ", x, "Index: ", timeSlot);
-					
-					if (timeSlot == x) {
-						if (activity.day == this.props.value) {
-							
-							return <ExtracurricularCard key={uuid()} extracurricular={activity} />
-						} 
-						// else if (timeSlot == phData.placeholder){
-						// 	console.log("ACTIVITIES TIMESLOT MATCHED PLACEHOLDER: ", timeSlot);
-						// 	return <PlaceholderCard />
-						// }					
-					}
-				})
-			}
 
-			{
+		return (<div className={holderClassName}>
+
+			{ 
 				this.props.classes.map((course, index) => {
 					const i = substring(course.start + "") + "";
 					let x = IndexToTime[i];					
 					if (timeSlot == x) {
 						return course.days.map((day) => {
-							if (day == this.props.value) {
-								PlaceholderCounts[day] = false;
-								console.log("New PlaceholderCounts: ", PlaceholderCounts);
-								return <ScheduleCard key={uuid()} course={course} />	
-							} else {
+							if (day != this.props.value) {
 								return <PlaceholderCard key={uuid()} />
-							}
+							} 
 						})
-						
-					} else {
-						if (timeSlot == "Other" && course.room == "OC DL ONLINE") {
-							return <ScheduleCard key={uuid()} course={course} />
-						}
 					}
-				})	
+				})
 			}
+
+			<div className="main-card-slot-scroll">
+				{
+					activities.map((activity, index) => {
+						// console.log("Got Activity: ");
+						// console.log(activity);
+						const i = substring(activity.startTime + "") + "";
+						console.log(i);
+						let x = IndexToTime[i];
+						console.log("X: ", x, "Index: ", timeSlot);
+						
+						if (timeSlot == x) {
+							if (activity.day == this.props.value) {
+								
+								return <ExtracurricularCard key={uuid()} extracurricular={activity} />
+							} 
+							// else if (timeSlot == phData.placeholder){
+							// 	console.log("ACTIVITIES TIMESLOT MATCHED PLACEHOLDER: ", timeSlot);
+							// 	return <PlaceholderCard />
+							// }					
+						}
+					})
+				}
+
+				{
+					this.props.classes.map((course, index) => {
+						const i = substring(course.start + "") + "";
+						let x = IndexToTime[i];					
+						if (timeSlot == x) {
+							return course.days.map((day) => {
+								if (day == this.props.value) {
+									PlaceholderCounts[day] = false;
+									console.log("New PlaceholderCounts: ", PlaceholderCounts);
+									return <ScheduleCard key={uuid()} course={course} />	
+								} 
+
+							})
+							
+						} else {
+							if (timeSlot == "Other" && course.room == "OC DL ONLINE") {
+								return <ScheduleCard key={uuid()} course={course} />
+							}
+						}
+					})	
+				}
+			</div>
 		</div>);
 	}
 

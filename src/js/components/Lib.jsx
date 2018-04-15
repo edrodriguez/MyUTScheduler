@@ -33,6 +33,7 @@ export const parseTime = (time) => {
     if (time > 1300)
       time = time - 1200;
     hour = Math.floor(time / 100);
+    if (hour > 12) hour = 12;
     hour = hour.toString();
     min = time % 100;
     min = addPadding(min,2);

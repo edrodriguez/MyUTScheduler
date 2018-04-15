@@ -108,7 +108,7 @@ class App extends Component {
 				<SearchClasses 
 					updateClassesHandler={this.updateClassesHandler}
 				/>
-				<div className="search-column"></div>
+				
 				</div>
 				<div style={{display: 'flex', flexDirection: 'column'}}>
 					<Extracurricular 

@@ -118,7 +118,6 @@ module.exports = [
     },
     {
       name: 'client',
-
       entry: [
         'babel-polyfill',
         './src/js/app.jsx',
@@ -205,7 +204,8 @@ module.exports = [
             { family: "Roboto", variants: [ "400", "700italic" ] },
             { family: "Roboto Mono"},
             { family: 'Raleway', variants: [ "400"] },
-            { family: 'Poppins', variants: [ "400", "700"]}
+            { family: 'Poppins', variants: [ "400", "700"]},
+            { family: 'Nunito', variants: [ "400" ]}
           ]
           /* ...options */
         })

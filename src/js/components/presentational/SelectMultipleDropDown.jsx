@@ -50,23 +50,16 @@ const SemestersFieldBase = (props) => {
           name="selected-state"
           disabled={false}
           value={props.semesterValue}
-          onOpen={(e) => {
-            props.handleClearClasses();
-            props.handleLoadingStateText();
-          }}
-          onClose={(e) => {
-            props.handleDepartmentStateText();
-          }}
+          
           onChange={async (newValue) => {
             console.log("On Change.");
             StateData.semester = newValue;
             props.updateValue({ semesterValue: newValue });
             
-            {/*props.handleLoadingStateText();*/}
-
             await props.get_departments.refetch({
-              semester: newValue
+              semester: StateData.semester
             }).then(obj => {
+              props.handleClearClasses();
               console.log(obj);
               console.log(obj.data.getDepartments);
 
@@ -78,6 +71,7 @@ const SemestersFieldBase = (props) => {
                 });
               }
               props.handleGetDepartments(newValue, Departments, true, false);
+              props.handleDepartmentStateText();
             }).catch(err => {
               console.error("Promise Rejected, Reason: ", err);
             });            
@@ -110,9 +104,6 @@ const SemestersFieldBase = (props) => {
               onChange={async (newValue) => {
                 console.log("On Change.");
                 StateData.department = newValue;
-
-                // props.handleClearClasses();
-                // props.handleLoadingStateText();
 
                 console.log("UPDATING VALUE: ", newValue);
                 props.updateValue({ departmentValue: newValue });
@@ -157,7 +148,7 @@ const SemestersFieldBase = (props) => {
                 options={Courses}
                 simpleValue
                 clearable={props.clearable}
-                placeholder="Semester"
+                placeholder="Course"
                 name="selected-state"
                 disabled={false}
                 value={props.coursesValue}
@@ -194,32 +185,7 @@ const SemestersFieldBase = (props) => {
         </div>
     );
 };
-
-
-/* V1 Keys:
-  id
-  section       
-  daysMet       
-  startDate     
-  endDate
-  startTime
-  endTime
-  room
-  term           
-  crossList      
-  status         
-  sectionTitle   
-  roomNum   
-  roomName    
-  buildingName
-  campus 
-  course     
-  subject   
-  sectionNum 
-  instructor
-  courseOfferingId
-  sameTimeLink
-*/  
+ 
 const SemestersField = compose(
   graphql(gql`
     query SearchClassesGetSubjectsByTermDeptCourse (
@@ -314,8 +280,8 @@ const SemestersField = compose(
         // this.select.setInputValue('');
       },
       updateValue: props => newValue => {
-        console.log(newValue);
-        return newValue
+        console.log("New Value: ", newValue);
+        return newValue;
       },
       handleGetDepartments: props => (event, departments, subjectsEnabled, coursesEnabled) => {
         return {

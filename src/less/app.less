@@ -61,7 +61,7 @@ th:hover {
 	flex-direction: column;
 	width: 100%;
 	margin: 0px 5px 0px 5px;
-	height: 800px;
+	height: 1000px;
 }
 
 .calendar-column-header {
@@ -170,7 +170,7 @@ th:hover {
 .monday-component-slot-before-noon,
 .monday-component-slot-after-noon {
 	width: 250px;
-	min-height: 20px;
+	// min-height: 20px;
 	max-height: 230px;
 	// height: 100%;
 	justify-content: center;
@@ -186,7 +186,7 @@ th:hover {
 }
 .schedule-component-slot {
 	width: 250px;
-	min-height: 20px;
+	// min-height: 20px;
 	max-height: 230px;
 	// height: 100%;
 	justify-content: center;
@@ -199,6 +199,17 @@ th:hover {
 	flex-basis: auto;
 	display: flex;
 	flex-direction: row;
+}
+
+.main-card-slot-scroll {
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+	height: auto;
+	min-height: 20px;
+	max-height: 500px;
+	align-content: center;
+	flex-direction: column;
 }
 
 /* --------- End Schedule Components --------- */
@@ -346,9 +357,9 @@ th:hover {
 	border-radius: 13px;
 	background-color: rgba(0, 62, 126, 0.4);
 	width: 100%;
-	height: 130px;
-	min-height: 100px;
-	max-height: 200px;
+	// height: 130px;
+	// min-height: 100px;
+	// max-height: 200px;
 	margin-top: 10px;
 }
 .schedule-card-placeholder {

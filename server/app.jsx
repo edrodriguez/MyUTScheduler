@@ -78,31 +78,6 @@ const connection = mysql.createConnection({
 /* ---------- Begin GraphQL Schema ---------- */
 
 /* 
-Example Course Record (V1):
-
-{ 
-    CourseSection: 'HED 8570/445 SE',
-    Days_Met: 'S',
-    Start_Date: 2018-08-27T04:00:00.000Z,
-    End_Date: 2018-10-16T04:00:00.000Z,
-    Start_Time: '10:00 AM',
-    End_Time: '3:00 PM',
-    Room: null,
-    Term: 'Fall 2018',
-    CrossList: null,
-    Status: 'Unassigned',
-    Section_Title: 'Research in Higher Education',
-    Room_Num: null,
-    Room_Name: null,
-    Building_Name: null,
-    Campus: 'UT',
-    Course: '8570',
-    Subject: 'HED',
-    Section_Num: 445,
-    Instructor: 'Opp',
-    Course_Offering_Id: 52015,
-    Same_Time_Link: null 
-}
 
 Example Course Record (V2):
 
@@ -181,34 +156,6 @@ const courseOfferedRecordTypeV2 = new GraphQLObjectType({
                 return days;
             } 
         }
-    }
-});
-
-const courseOfferedRecordTypeV1 = new GraphQLObjectType({
-    name: 'courseRecord',
-    fields: {
-        id:                 { type: GraphQLID, resolve: (root, args, context, info) => { return uuidv4(); }},
-        section:            { type: GraphQLString, resolve: (root, args, context, info) => { return root.CourseSection } },
-        daysMet:            { type: GraphQLString, resolve: (root, args, context, info) => { return root.Days_Met } },
-        startDate:          { type: GraphQLString, resolve: (root, args, context, info) => { return root.Start_Date } },
-        endDate:            { type: GraphQLString, resolve: (root, args, context, info) => { return root.End_Date } },
-        startTime:          { type: GraphQLString, resolve: (root, args, context, info) => { return root.Start_Time } },
-        endTime:            { type: GraphQLString, resolve: (root, args, context, info) => { return root.End_Time } },
-        room:               { type: GraphQLString, resolve: (root, args, context, info) => { return root.Room } },
-        term:               { type: GraphQLString, resolve: (root, args, context, info) => { return root.Term } },
-        crossList:          { type: GraphQLString, resolve: (root, args, context, info) => { return root.CrossList } },
-        status:             { type: GraphQLString, resolve: (root, args, context, info) => { return root.Status } },
-        sectionTitle:       { type: GraphQLString, resolve: (root, args, context, info) => { return root.Section_Title } },
-        roomNum:            { type: GraphQLString, resolve: (root, args, context, info) => { return root.Room_Num } },
-        roomName:           { type: GraphQLString, resolve: (root, args, context, info) => { return root.Room_Name } },
-        buildingName:       { type: GraphQLString, resolve: (root, args, context, info) => { return root.Building_Name } },
-        campus:             { type: GraphQLString, resolve: (root, args, context, info) => { return root.Campus } },
-        course:             { type: GraphQLString, resolve: (root, args, context, info) => { return root.Course } },
-        subject:            { type: GraphQLString, resolve: (root, args, context, info) => { return root.Subject } },
-        sectionNum:         { type: GraphQLString, resolve: (root, args, context, info) => { return root.Section_Num } },
-        instructor:         { type: GraphQLString, resolve: (root, args, context, info) => { return root.Instructor } },
-        courseOfferingId:   { type: GraphQLString, resolve: (root, args, context, info) => { return root.Course_Offering_Id } },
-        sameTimeLink:       { type: GraphQLString, resolve: (root, args, context, info) => { return root.Same_Time_Link } },
     }
 });
 
